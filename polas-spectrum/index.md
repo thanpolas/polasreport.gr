@@ -86,18 +86,28 @@ permalink: /polas-spectrum/
 <img src="/polas-spectrum/assets/partyscale-welfare@2x.png" alt="Party Scale – Welfare" width="600"/><br/>
 [Κατεβάστε το γράφημα](/polas-spectrum/assets/partyscale-welfare@2x.png)  
 
+---
+
 ### Αγορά & Οικονομία  
 <img src="/polas-spectrum/assets/partyscale-economy@2x.png" alt="Party Scale – Economy" width="600"/><br/>
 [Κατεβάστε το γράφημα](/polas-spectrum/assets/partyscale-economy@2x.png)  
+
+---
 
 ### Κανονιστικό Πλαίσιο
 <img src="/polas-spectrum/assets/partyscale-regulation@2x.png" alt="Party Scale – Regulation" width="600"/><br/>
 [Κατεβάστε το γράφημα](/polas-spectrum/assets/partyscale-regulation@2x.png)  
 
 
+---
+
+
 ### Μετανάστευση  
 <img src="/polas-spectrum/assets/partyscale-immigration@2x.png" alt="Party Scale – Immigration" width="600"/><br/>
 [Κατεβάστε το γράφημα](/polas-spectrum/assets/partyscale-immigration@2x.png)  
+
+---
+
 
 ### Άμυνα  
 <img src="/polas-spectrum/assets/partyscale-defense@2x.png" alt="Party Scale – Defense" width="600"/><br/>
@@ -128,17 +138,29 @@ permalink: /polas-spectrum/
 <img src="/polas-spectrum/assets/fullspectrum-nd@2x.png" alt="Full Spectrum – ND" width="600"/><br/>
 [Κατεβάστε το γράφημα](/polas-spectrum/assets/fullspectrum-nd@2x.png)  
 
+---
+
+
 ### ΠΑΣΟΚ  
 <img src="/polas-spectrum/assets/fullspectrum-pasok@2x.png" alt="Full Spectrum – PASOK" width="600"/><br/>
 [Κατεβάστε το γράφημα](/polas-spectrum/assets/fullspectrum-pasok@2x.png)  
+
+---
+
 
 ### ΣΥΡΙΖΑ  
 <img src="/polas-spectrum/assets/fullspectrum-syriza@2x.png" alt="Full Spectrum – Syriza" width="600"/><br/>
 [Κατεβάστε το γράφημα](/polas-spectrum/assets/fullspectrum-syriza@2x.png)  
 
+---
+
+
 ### KKE  
 <img src="/polas-spectrum/assets/fullspectrum-kke@2x.png" alt="Full Spectrum – KKE" width="600"/><br/>
 [Κατεβάστε το γράφημα](/polas-spectrum/assets/fullspectrum-kke@2x.png)  
+
+---
+
 
 ### Meevlax  
 <img src="/polas-spectrum/assets/fullspectrum-meevlax@2x.png" alt="Full Spectrum – Meevlax" width="600"/><br/>

@@ -183,3 +183,108 @@ blockquote{
 /* Ensure main content doesn't get hidden behind sticky header on very small screens:
    if header height changes, the sticky header still occupies layout space so no offset needed.
 */
+
+/* -------------------------
+   Polas Spectrum — page-specific improvements
+   ------------------------- */
+
+/* Stronger, clearer heading hierarchy */
+h1 {
+  font-size: 2.25rem;
+  margin: 1rem 0 0.75rem;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-size: 1.5rem;
+  margin: 1.75rem 0 0.6rem;
+  padding-bottom: 0.25rem;
+  color: var(--text-color);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+h3 {
+  font-size: 1.125rem;
+  margin: 1.25rem 0 0.5rem;
+  font-weight: 600;
+  color: #0f1724;
+}
+
+/* Clear section spacing so the eye can separate blocks */
+.section {
+  margin-bottom: 1.75rem;
+  padding-top: 0.25rem;
+}
+
+/* Style chart images used on the Polas Spectrum pages so each image reads as a card */
+img[src*="/polas-spectrum/assets/"] {
+  display: block;
+  width: 100%;
+  max-width: 760px; /* comfortable reading width for these wide charts */
+  height: auto;
+  margin: 0.5rem 0 0.35rem;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 25px rgba(12,20,30,0.06);
+}
+
+/* Download links that point to chart assets: make them clearly attached to the image */
+a[href*="/polas-spectrum/assets/"] {
+  display: inline-block;
+  margin: 0.25rem 0 1.25rem;
+  color: var(--accent);
+  background: rgba(10,102,194,0.04);
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(10,102,194,0.08);
+}
+a[href*="/polas-spectrum/assets/"]:hover {
+  background: rgba(10,102,194,0.09);
+  text-decoration: none;
+}
+
+/* Make small portrait thumbnails in the tables compact and visually neutral */
+table img[src*="/polas-spectrum/assets/"] {
+  width: 100px !important;
+  max-width: 100px !important;
+  height: auto !important;
+  margin: 0;
+  padding: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  border: none;
+}
+
+/* Improve paragraph spacing after images/links so each graphic block is a self-contained unit */
+img[src*="/polas-spectrum/assets/"] + br + a[href*="/polas-spectrum/assets/"],
+img[src*="/polas-spectrum/assets/"] + a[href*="/polas-spectrum/assets/"] {
+  margin-top: 0.25rem;
+  display: inline-block;
+}
+
+/* Make lists, tables, and code blocks easier to scan in long analytic pages */
+.container p, .container ul, .container ol, .container table {
+  max-width: var(--content-width);
+}
+
+/* Responsive tweaks: keep charts readable on small screens */
+@media (max-width: 720px) {
+  img[src*="/polas-spectrum/assets/"] {
+    max-width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 6px 14px rgba(12,20,30,0.05);
+  }
+  table img[src*="/polas-spectrum/assets/"] {
+    width: 72px !important;
+    max-width: 72px !important;
+  }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.15rem; }
+}
+
+/* Accessibility: ensure focus styles on chart download links */
+a[href*="/polas-spectrum/assets/"]:focus {
+  outline: 3px solid rgba(10,102,194,0.15);
+  outline-offset: 3px;
+}
