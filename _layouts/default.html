@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>{{ page.title }}</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  {% if page.description %}<meta name="description" content="{{ page.description | default: site.description | escape }}">{% endif %}
+  <meta name="author" content="Thanasis Polychronakis">
+  <meta name="robots" content="index, follow">
+
+  <!-- include Google Analytics (only when configured and in production) -->
+  {% include google-analytics.html %}
+
+  <!-- link minimal site stylesheet -->
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+  <!-- ...existing code... (additional head includes) -->
+</head>
+<body>
+  <!-- ...existing code... (site header / navigation) -->
+
+  <main role="main" id="content">
+    {{ content }}
+  </main>
+
+  <!-- include site footer (override if you created _includes/footer.html) -->
+  {% include footer.html %}
+
+  <!-- ...existing code... (scripts, analytics fallbacks, other includes) -->
+</body>
+</html>
