@@ -21,14 +21,18 @@
   <!-- ...existing code... (additional head includes) -->
 </head>
 <body>
-  <!-- ...existing code... (site header / navigation) -->
+  <!-- include persistent header -->
+  {% include header.html %}
 
-  <main role="main" id="content">
-    {{ content }}
-  </main>
+  <!-- center page content inside the container (max width + side padding) -->
+  <div class="container">
+    <main role="main" id="content">
+      {{ content }}
+    </main>
 
-  <!-- include site footer (override if you created _includes/footer.html) -->
-  {% include footer.html %}
+    <!-- include site footer -->
+    {% include footer.html %}
+  </div>
 
   <!-- ...existing code... (scripts, analytics fallbacks, other includes) -->
 </body>
