@@ -11,6 +11,7 @@ permalink: /
 ## Αρχεία και Δεδομένα
 
 * [Polas Spectrum - Μοντέλο Αξιών Κομμάτων](/polas-spectrum)
+* [Truth Scale - Greekonomics #04 - Καρτέλ](/assets/images/04-truth-scale-Cartel.png)
 
 ## Τα Στοιχεία μου
 
