@@ -8,7 +8,12 @@ permalink: /
 
 Δεν υπάρχουν πολλά πράγματα ακόμα, προς το παρών τα στοιχεία μου και αρχεία από τα βίντεο που αναφέρω στο κανάλι μου στο TikTok.
 
+
 ## Αρχεία και Δεδομένα
+
+{% for post in site.posts %}
+* [{{ post.title }}]({{ post.url }})
+{% endfor %}
 
 * [Polas Spectrum - Μοντέλο Αξιών Κομμάτων](/polas-spectrum)
 * [Truth Scale - Greekonomics #04 - Καρτέλ](/assets/images/04-truth-scale-Cartel.png)
@@ -20,3 +25,5 @@ permalink: /
 * Twitter: [@thanpolas_gr](https://twitter.com/thanpolas_gr)
 * Facebook: [than.polas](https://www.facebook.com/than.polas)
 * Instagram: [@thanpolas](https://www.instagram.com/thanpolas)
+
+
