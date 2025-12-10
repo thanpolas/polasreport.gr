@@ -20,11 +20,11 @@ permalink: /
 
 ## Τα Στοιχεία μου
 
-* Support me on [Patreon](https://www.patreon.com/PolasReport)
-* YouTube: [@polasreport](https://www.youtube.com/@polas-report)
-* TikTok: [@thanpolas_gr](https://www.tiktok.com/@thanpolas)
-* Twitter: [@thanpolas_gr](https://twitter.com/thanpolas_gr)
-* Facebook: [than.polas](https://www.facebook.com/than.polas)
-* Instagram: [@thanpolas](https://www.instagram.com/thanpolas)
+* Support me on [Patreon](https://www.patreon.com/PolasReport){:target="_blank"}
+* YouTube: [@polasreport](https://www.youtube.com/@polas-report){:target="_blank"}
+* TikTok: [@thanpolas_gr](https://www.tiktok.com/@thanpolas){:target="_blank"}
+* Twitter: [@thanpolas_gr](https://twitter.com/thanpolas_gr){:target="_blank"}
+* Facebook: [than.polas](https://www.facebook.com/than.polas){:target="_blank"}
+* Instagram: [@thanpolas](https://www.instagram.com/thanpolas){:target="_blank"}
 
 
