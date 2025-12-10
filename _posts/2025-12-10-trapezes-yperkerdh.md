@@ -7,7 +7,9 @@ excerpt: "Ανάλυση των υπερκερδών των τραπεζών σ�
 categories: finance,banks
 ---
 
-* [Ισολογισμοί Τραπεζών][isologismoi]{:target="_blank"}
+* [Ισολογισμοί Τραπεζών live (requires GMail)][isologismoi]{:target="_blank"}
+* [Ισολογισμοί Τραπεζών - xlxs αρχεία][isologismoixlx]{:target="_blank"}
 
 
 [isologismoi]: https://docs.google.com/spreadsheets/d/e/2PACX-1vQMm7BNtwJdD79gFvhCRgpaeuwPVLBnMk0lgz3ZlsaLmfynBnhUOPZeA73YOWWIjgC-YncDC5I1j9Rs/pubhtml
+[isologismoixlx]: /assets/files/bank-balance-sheets-2024.xlsx
