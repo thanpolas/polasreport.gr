@@ -4,7 +4,7 @@ description: "Personal notes and reports"
 permalink: /
 ---
 
-Καλός ήρθατε στο polasreport.gr
+Καλώς ήρθατε στο polasreport.gr
 
 Δεν υπάρχουν πολλά πράγματα ακόμα, προς το παρών τα στοιχεία μου και αρχεία από τα βίντεο που αναφέρω στο κανάλι μου στο TikTok.
 
@@ -20,6 +20,7 @@ permalink: /
 
 ## Τα Στοιχεία μου
 
+* Support me on [Patreon](https://www.patreon.com/PolasReport)
 * YouTube: [@polasreport](https://www.youtube.com/@polas-report)
 * TikTok: [@thanpolas_gr](https://www.tiktok.com/@thanpolas)
 * Twitter: [@thanpolas_gr](https://twitter.com/thanpolas_gr)
