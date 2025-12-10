@@ -12,4 +12,4 @@ categories: finance,banks
 
 
 [isologismoi]: https://docs.google.com/spreadsheets/d/e/2PACX-1vQMm7BNtwJdD79gFvhCRgpaeuwPVLBnMk0lgz3ZlsaLmfynBnhUOPZeA73YOWWIjgC-YncDC5I1j9Rs/pubhtml
-[isologismoixlx]: /assets/files/bank-balance-sheets-2024.xlsx
+[isologismoixlx]: /assets/files/tiktok-trapezes-dec-2025.xlsx
