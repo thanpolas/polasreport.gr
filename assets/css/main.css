@@ -10,6 +10,12 @@
   --radius: 6px;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
   --ui-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  /* Social brand colors */
+  --brand-x: #1DA1F2; /* X / Twitter blue */
+  --brand-facebook: #4267B2; /* Facebook brand blue */
+  --brand-youtube: #FF0000; /* YouTube red */
+  --brand-tiktok: #010101; /* TikTok black */
+  --brand-instagram: #E1306C; /* Instagram pink-magenta */
 }
 
 html,body{
@@ -180,6 +186,58 @@ blockquote{
   .container { padding-left: 1rem; padding-right: 1rem; }
 }
 
+/* --- Post lists on front page (media within posts) --- */
+.post-list { list-style-type: disc; margin: 0 0 1rem 0; padding-left: 1rem; }
+.post-list > li { margin-bottom: 0.65rem; }
+.post-list a { font-weight: 600; color: var(--text-color); }
+.post-list .post-media { list-style-type: circle; margin: 0.35rem 0 0 1.5rem; padding-left: 0; }
+.post-list .post-media li { font-size: 0.95rem; color: var(--muted); margin-bottom: 0.125rem; }
+.post-list .post-media strong { font-weight: 600; margin-right: 0.4rem; color: var(--text-color); }
+
+/* Patreon CTA styles */
+.patreon-cta { border-radius: var(--radius); box-sizing: border-box; }
+.patreon-cta--subtle { background:#fff9f0; border:1px solid #f1e0d0; padding:0.6rem 0.9rem; margin-bottom: 1rem; color:var(--text-color); font-size:0.95rem; }
+.patreon-cta--subtle a{ color:var(--accent); font-weight:600; text-decoration: underline; }
+
+.patreon-cta--large { background: #fafafa; border: 1px solid var(--border); margin-top: 2rem; padding: 1.25rem; text-align: center; }
+.patreon-cta--large .patreon-button { display:inline-block; background: #ff4500; color: white; padding: 0.6rem 1rem; border-radius: 6px; font-weight:700; text-decoration:none; }
+.patreon-cta--large .patreon-button:hover { background: #e43b00; }
+
+/* Inline CTA variants used in templates (moved from layout inline styles) */
+.patreon-inline { display:block; text-align:center; font-weight:400; color:var(--text-color); font-size:0.95rem; }
+.patreon-inline--top { background:#f7f7f7; padding:10px; margin-bottom:1rem; border:none; border-radius:6px; color: var(--muted); box-shadow: 0 1px 0 rgba(0,0,0,0.03); }
+.patreon-inline--top a { color: rgba(10,102,194,0.85); text-decoration: none; font-weight:400; }
+.patreon-inline--top a:hover { text-decoration: underline; }
+
+.patreon-inline--bottom { background:#f2f2f2; padding:14px; margin-top:1.75rem; border:none; border-radius:8px; }
+.patreon-inline--bottom .patreon-link { color: rgba(10,102,194,0.95); text-decoration:none; display:inline-block; padding:8px 12px; border-radius:6px; font-weight:600; }
+.patreon-inline--bottom .patreon-link:hover { text-decoration:underline; }
+.patreon-inline--bottom .patreon-copy { margin:0 0 0.5rem; font-weight:400; }
+
+/* Responsive YouTube embed */
+.video-container { position:relative; width:100%; padding-bottom:56.25%; margin-bottom: 1.25rem; overflow:hidden; border-radius: var(--radius); }
+.video-container iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
+
+/* Media gallery styles */
+.media-gallery { display:flex; flex-wrap:wrap; gap:1rem; margin-bottom: 1.25rem; align-items:flex-start; }
+.media-gallery .media-item { flex: 1 1 320px; max-width: 420px; }
+.media-gallery img { display:block; width:100%; height:auto; border-radius:6px; }
+.media-gallery figcaption { color:var(--muted); font-size:0.95rem; margin-top:0.35rem; }
+
+/* Link-only media gallery (emoji + link) */
+.media-gallery.media-gallery--links { display:block; margin-bottom: 1.25rem; }
+.media-gallery.media-gallery--links .media-item { display:flex; align-items:center; gap:0.6rem; padding:0.35rem 0; border-bottom: 1px dashed rgba(0,0,0,0.04); }
+.media-gallery.media-gallery--links .media-emoji { width: 36px; text-align:center; font-size:1.1rem; }
+.media-gallery.media-gallery--links .media-item a { color:var(--text-color); font-weight:500; }
+.media-gallery.media-gallery--links .media-item strong { color:var(--muted); margin-right:0.35rem; font-weight:600; }
+.media-gallery.media-gallery--links .media-item:last-child { border-bottom: none; }
+
+@media (max-width:640px){
+  .media-gallery { gap: 0.5rem; }
+  .media-gallery .media-item { flex:1 1 100%; }
+}
+
+
 /* Ensure main content doesn't get hidden behind sticky header on very small screens:
    if header height changes, the sticky header still occupies layout space so no offset needed.
 */
@@ -293,4 +351,34 @@ a[href*="/polas-spectrum/assets/"]:focus {
 .youtube-link {
   color: #ff0000;
   font-weight: 600;
+}
+
+/* Social icons next to YouTube link */
+.post-meta-actions { display:flex; align-items:center; margin-top:0.65rem; }
+.post-meta-actions .social-icon { display:inline-flex; align-items:center; gap:0.45rem; }
+.social-icon { display:inline-flex; align-items:center; justify-content:left; min-width:34px; height:30px; border-radius:6px; background:transparent; color:var(--muted); text-decoration:none; padding:0 0.5rem; }
+.social-icon i, .social-icon svg { width: 18px; height: 18px; display:block; font-size:18px; line-height:18px; }
+.social-icon { transition: background-color 120ms ease, color 120ms ease, transform 120ms ease; }
+.social-icon:hover { background: rgba(0,0,0,0.04); color:var(--text-color); transform: translateY(-1px); }
+.social-icon--x { color: var(--brand-x); }
+.social-icon--tiktok { color: var(--brand-tiktok); }
+.social-icon--facebook { color: var(--brand-facebook); }
+.social-icon--youtube { color: var(--brand-youtube); }
+.social-icon--instagram { color: var(--brand-instagram); }
+.social-text { font-weight:600; }
+.post-video { display:inline-flex; align-items:center; gap:0.6rem; }
+
+/* Brand hover colors (subtle) */
+.social-icon--youtube:hover { background: rgba(255,0,0,0.06); color: var(--brand-youtube); }
+.social-icon--x:hover { background: rgba(29,161,242,0.06); color: var(--brand-x); }
+.social-icon--tiktok:hover { background: rgba(0,0,0,0.06); color: var(--brand-tiktok); }
+.social-icon--facebook:hover { background: rgba(66,103,178,0.06); color: var(--brand-facebook); }
+.social-icon--instagram:hover { background: linear-gradient(45deg, #f58529 0%, #dd2a7b 50%, #8134af 100%); color: #fff; }
+/* focus for keyboard users */
+.social-icon:focus { outline: 3px solid rgba(10,102,194,0.12); outline-offset: 2px; }
+
+/* Controlled visibility of social text next to icons for small screens */
+.social-icon .social-text { display:inline-block; font-weight:600;  }
+@media (max-width: 720px) {
+  .social-icon .social-text { display:none; }
 }

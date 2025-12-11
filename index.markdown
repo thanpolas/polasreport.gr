@@ -11,12 +11,27 @@ permalink: /
 
 ## Αρχεία και Δεδομένα
 
+<ul class="post-list">
 {% for post in site.posts %}
-* [{{ post.title }}]({{ post.url }})
+	<li>
+		<a href="{{ post.url }}">{{ post.title }}</a>
+		{% if post.media %}
+		<ul class="post-media">
+			{% for m in post.media %}
+			{% case m.type | downcase %}
+			{% when "image" %}{% assign pre = "🏞️" %}
+			{% when "video" %}{% assign pre = "📼" %}
+			{% else %}{% assign pre = "Media" %}
+			{% endcase %}
+			<li><strong>{{ pre }}:</strong> <a href="{{ m.url }}" target="_blank">{{ m.caption | default: m.url }}</a></li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	</li>
 {% endfor %}
+</ul>
 
 * [Polas Spectrum - Μοντέλο Αξιών Κομμάτων](/polas-spectrum)
-* [Truth Scale - Greekonomics #04 - Καρτέλ](/assets/images/04-truth-scale-Cartel.png)
 
 ## Τα Στοιχεία μου
 
