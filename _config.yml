@@ -20,7 +20,7 @@
 
 title: Polas Report
 description: >- # this means to ignore newlines until "baseurl:"
-  Polas Report is the news and politics channel of Thanasis Polychronakis
+  Polas Report Πολιτική Ανάλυση με Στοιχεία και Δεδομένα
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://polasreport.gr" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: thanpolas_gr
@@ -30,6 +30,13 @@ theme: minima
 plugins:
   - jekyll-feed
 future: true
+
+gems:
+- jekyll-github-metadata
+- jekyll-mentions
+- jekyll-redirect-from
+- jekyll-sitemap
+- jemoji
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
