@@ -1,0 +1,71 @@
+// ============================================================================
+// PAGE-SPECIFIC: Polas Spectrum
+// ============================================================================
+
+// Improve heading hierarchy
+h2 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+h3 {
+  color: #0f1724;
+}
+
+// Clear section spacing
+.section {
+  margin-bottom: $sp-xl;
+  padding-top: $sp-xs;
+}
+
+// ---- Spectrum Chart Images (styled as cards) ----
+
+img[src*="/polas-spectrum/assets/"] {
+  display: block;
+  width: 100%;
+  max-width: $max-chart-width;
+  height: auto;
+  margin: $sp-sm 0 $sp-xs;
+  border-radius: 8px;
+  background: $color-body-bg;
+  border: 1px solid $color-border;
+  box-shadow: $shadow-md;
+}
+
+// ---- Chart Download Links ----
+
+
+
+// Chart images in tables (thumbnails)
+table img[src*="/polas-spectrum/assets/"] {
+  width: 100px !important;
+  max-width: 100px !important;
+  height: auto !important;
+  margin: 0;
+  padding: 0;
+  border-radius: $radius;
+  box-shadow: none;
+  border: none;
+}
+
+// ---- Responsive: Polas Spectrum ----
+
+@include respond-to($bp-md) {
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+  }
+
+  img[src*="/polas-spectrum/assets/"] {
+    max-width: 100%;
+    border-radius: $radius;
+    box-shadow: $shadow-lg;
+  }
+
+  table img[src*="/polas-spectrum/assets/"] {
+    width: 72px !important;
+    max-width: 72px !important;
+  }
+}

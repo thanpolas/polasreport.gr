@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>{{ page.title }}</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  {% if page.description %}<meta name="description" content="{{ page.description | default: site.description | escape }}">{% endif %}
+  <meta name="author" content="Thanasis Polychronakis">
+  <meta name="robots" content="index, follow">
+
+  <!-- include Google Analytics (only when configured and in production) -->
+  {% include google-analytics.html %}
+
+  <!-- link minimal site stylesheet -->
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <!-- Icon font (Boxicons) for social icons - loaded site-wide once -->
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+
+  <!-- ...existing code... (additional head includes) -->
+</head>
+<body>
+  <!-- include persistent header -->
+  {% include header.html %}
+
+  <!-- center page content inside the container (max width + side padding) -->
+  {{ content }}
+
+  <!-- include site footer -->
+  {% include footer.html %}
+
+  <!-- ...existing code... (scripts, analytics fallbacks, other includes) -->
+</body>
+</html>

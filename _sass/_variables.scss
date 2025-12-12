@@ -1,0 +1,89 @@
+// ============================================================================
+// VARIABLES: Theme, colors, spacing, typography, breakpoints
+// ============================================================================
+
+// ---- Layout ----
+$content-width: 880px;
+$max-chart-width: 760px;
+$header-height: auto;
+
+// ---- Spacing (based on 4px grid) ----
+$sp-xs: 0.25rem;
+$sp-sm: 0.5rem;
+$sp-md: 1rem;
+$sp-lg: 1.25rem;
+$sp-xl: 1.75rem;
+$sp-2xl: 2rem;
+
+// ---- Typography ----
+$font-ui-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+$font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+$font-serif: Georgia, serif;
+
+// ---- Colors: Core ----
+$color-body-bg: #ffffff;
+$color-text: #222;
+$color-text-muted: #666;
+$color-accent: #0a66c2;
+$color-border: #e6e6e6;
+$color-subtle-bg: #f6f8fa;
+
+// ---- Colors: UI Elements ----
+$radius: 6px;
+$shadow-sm: 0 1px 4px rgba(20, 20, 20, 0.03);
+$shadow-md: 0 10px 25px rgba(12, 20, 30, 0.06);
+$shadow-lg: 0 6px 14px rgba(12, 20, 30, 0.05);
+
+// ---- Colors: Header (dark theme) ----
+$color-header-bg: #1b2a41;
+$color-header-text: #ffffff;
+$color-header-text-secondary: rgba(255, 255, 255, 0.86);
+$color-header-border: rgba(255, 255, 255, 0.04);
+
+// ---- Colors: Brand Social Icons ----
+$color-brand-x: #1da1f2;
+$color-brand-facebook: #4267b2;
+$color-brand-youtube: #ff0000;
+$color-brand-tiktok: #010101;
+$color-brand-instagram: #e1306c;
+
+// ---- Breakpoints (mobile-first) ----
+$bp-sm: 640px;
+$bp-md: 720px;
+$bp-lg: 960px;
+
+// ============================================================================
+// MIXINS
+// ============================================================================
+
+// Responsive media queries
+@mixin respond-to($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+// Flexbox centered
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Transition shorthand
+@mixin transition($props: all, $duration: 120ms, $easing: ease) {
+  transition: $props $duration $easing;
+}
+
+// Text truncate
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Smooth font rendering
+@mixin font-smoothing {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

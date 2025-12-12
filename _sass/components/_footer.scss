@@ -1,0 +1,135 @@
+// Polas Report footer
+.site-footer {
+  --pr-bg-navy: #1b2a41;
+  --pr-bg-navy-light: #3a506b;
+  --pr-white: #ffffff;
+  --pr-black: #0a0a0a;
+  --pr-gold: #ffd60a;
+  --pr-blue: #3a86ff;
+
+  margin-top: 3rem;
+  background: var(--pr-bg-navy);
+  color: rgba(255, 255, 255, 0.88);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.site-footer .footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.site-footer .footer-brand {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--pr-white);
+
+  // keep it premium & simple (no glow here)
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.site-footer .footer-meta {
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.72);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.site-footer .footer-sep {
+  opacity: 0.6;
+}
+
+.site-footer .footer-nav {
+  display: flex;
+  gap: 0.9rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.site-footer .footer-link {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.site-footer .footer-link:hover {
+  color: var(--pr-white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.site-footer .footer-social {
+  display: inline-flex;
+  gap: 0.35rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.site-footer .footer-icon {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+  text-decoration: none;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.82);
+
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease, color 160ms ease;
+}
+
+.site-footer .footer-icon i {
+  font-size: 20px; // Boxicons
+  line-height: 1;
+}
+
+.site-footer .footer-icon:hover {
+  background: rgba(58, 134, 255, 0.14);
+  border-color: rgba(58, 134, 255, 0.35);
+  color: var(--pr-white);
+  transform: translateY(-1px);
+}
+
+// Make Patreon subtly “special” without using platform brand colors
+.site-footer .footer-icon[aria-label="Patreon"] {
+  background: rgba(255, 214, 10, 0.10);
+  border-color: rgba(255, 214, 10, 0.30);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.site-footer .footer-icon[aria-label="Patreon"]:hover {
+  background: rgba(255, 214, 10, 0.16);
+  border-color: rgba(255, 214, 10, 0.45);
+}
+
+// Responsive
+@media (max-width: 820px) {
+  .site-footer .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    align-items: start;
+  }
+
+  .site-footer .footer-nav {
+    justify-content: flex-start;
+  }
+
+  .site-footer .footer-social {
+    justify-content: flex-start;
+  }
+}

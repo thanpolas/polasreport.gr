@@ -1,0 +1,94 @@
+// ============================================================================
+// TYPOGRAPHY: Headings, paragraphs, lists, code blocks
+// ============================================================================
+
+h1,
+h2,
+h3,
+h4 {
+  color: $color-text;
+  line-height: 1.2;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: $sp-xs;
+}
+
+h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin: 0 0 $sp-md;
+}
+
+ul,
+ol {
+  margin: 0 0 $sp-md $sp-lg;
+}
+
+code,
+kbd,
+samp {
+  font-family: $font-mono;
+  background: $color-subtle-bg;
+  padding: $sp-xs 0.3rem;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+pre {
+  background: #0f1724;
+  color: #e6eef8;
+  padding: $sp-lg;
+  overflow: auto;
+  border-radius: $radius;
+  font-family: $font-mono;
+  font-size: 0.9rem;
+  margin: 0 0 $sp-md;
+}
+
+blockquote {
+  margin: 0 0 $sp-md;
+  padding: $sp-sm $sp-md;
+  border-left: 4px solid $color-border;
+  background: #fbfbfb;
+  color: $color-text-muted;
+}
+
+// ---- Tables ----
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 $sp-md;
+  font-size: 0.95rem;
+}
+
+th,
+td {
+  padding: $sp-sm 0.75rem;
+  border: 1px solid $color-border;
+  text-align: left;
+}
+
+th {
+  background: #fafafa;
+  font-weight: 600;
+}

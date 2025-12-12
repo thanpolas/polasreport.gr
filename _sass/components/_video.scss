@@ -1,0 +1,8 @@
+// ============================================================================
+// COMPONENT: Responsive Video Container (YouTube embeds)
+// ============================================================================
+
+/* ---- Native-sized video: use iframe width/height attributes rather than forced CSS sizing ---- */
+.video-container--native {
+  margin-bottom: $sp-lg;
+}

@@ -1,12 +1,18 @@
 <header class="site-header" role="banner">
   <div class="container header-inner">
     <div class="site-brand">
-      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title | default: "polasreport.gr" }}</a>
+      <a class="brand-logo" href="{{ '/' | relative_url }}" aria-label="Polas Report">
+        <!-- Inline wordmark SVG: white fill, gold stroke -->
+        <svg role="img" viewBox="0 0 420 44" height="32" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <title>Polas Report</title>
+          <text x="0" y="33" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="800" font-size="34" fill="#FFFFFF" stroke="#FFD60A" stroke-width="3" paint-order="stroke fill" stroke-linejoin="round">Polas Report</text>
+        </svg>
+        <span class="brand-logo__fallback" aria-hidden="true">Polas Report</span>
+      </a>
     </div>
 
     <nav class="site-nav" role="navigation" aria-label="Primary">
       <ul>
-        <li><a href="{{ '/' | relative_url }}">Home</a></li>
         <li><a href="{{ '/polas-spectrum/' | relative_url }}">Polas Spectrum</a></li>
       </ul>
     </nav>

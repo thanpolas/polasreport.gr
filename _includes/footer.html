@@ -1,0 +1,52 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-left">
+      <a class="footer-brand" href="/" aria-label="Polas Report home">Polas Report</a>
+      <div class="footer-meta">
+        <span>© <span id="footer-year"></span> Polas Report</span>
+        <span class="footer-sep">·</span>
+        <a class="footer-link" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
+          CC BY 4.0
+        </a>
+      </div>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a class="footer-link" href="/about/">About</a>
+      <a class="footer-link" href="https://patreon.com/polasreport" target="_blank" rel="noopener noreferrer">Patreon</a>
+      <a class="footer-link" href="/feed.xml">RSS</a>
+      <a class="footer-link" href="mailto:info@polasreport.gr">Contact</a>
+    </nav>
+
+    <div class="footer-social" aria-label="Social links">
+      <a class="footer-icon" href="https://patreon.com/polasreport" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
+        <i class="bx bxl-patreon"></i>
+      </a>
+      <a class="footer-icon" href="https://youtube.com/@polas-report" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <i class="bx bxl-youtube"></i>
+      </a>
+      <a class="footer-icon" href="https://www.tiktok.com/@thanpolas" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+        <i class="bx bxl-tiktok"></i>
+      </a>
+      <a class="footer-icon" href="https://x.com/thanpolas_gr" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+        <i class="bx bxl-twitter"></i>
+      </a>
+      <a class="footer-icon" href="https://facebook.com/than.polas" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <i class="bx bxl-facebook"></i>
+      </a>
+      <a class="footer-icon" href="https://instagram.com/thanpolas" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="bx bxl-instagram"></i>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    // tiny helper: current year
+    (function () {
+      var el = document.getElementById('footer-year');
+      if (el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+</footer>

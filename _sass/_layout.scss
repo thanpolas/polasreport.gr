@@ -1,0 +1,24 @@
+// ============================================================================
+// LAYOUT: Container, grid, main content area
+// ============================================================================
+
+main[role="main"] {
+  background: transparent;
+}
+
+.container,
+.site {
+  max-width: $content-width;
+  margin: 0 auto;
+  padding: $sp-lg;
+  box-sizing: border-box;
+}
+
+.full-width {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $sp-lg;
+  padding-right: $sp-lg;
+  box-sizing: border-box;
+}

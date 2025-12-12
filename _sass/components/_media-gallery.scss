@@ -1,0 +1,133 @@
+// ============================================================================
+// COMPONENT: Media Gallery (images + optional captions)
+// ============================================================================
+
+.media-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-md;
+  margin-bottom: $sp-lg;
+  align-items: flex-start;
+
+  .media-item {
+    flex: 1 1 320px;
+    max-width: 420px;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: $radius;
+  }
+
+  figcaption {
+    color: $color-text-muted;
+    font-size: 0.95rem;
+    margin-top: $sp-xs;
+  }
+}
+
+// ---- Media Gallery: Links Variant ----
+// Display mode: emoji + link text (dashed list)
+
+.media-gallery--links {
+  display: block;
+  margin-bottom: $sp-lg;
+
+  .media-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: $sp-lg 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.04);
+
+    a {
+      color: $color-accent;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    a:visited {
+      color: $color-accent;
+    }
+
+    strong {
+      color: $color-text-muted;
+      margin-right: $sp-xs;
+      font-weight: 600;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .media-emoji {
+    width: 36px;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+}
+
+// ---- Media Gallery: Pills Variant ----
+// Horizontal pill layout for compact media links
+
+.media-gallery--pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-sm;
+  margin-bottom: $sp-lg;
+  padding: 0;
+  list-style: none;
+
+  .media-pill {
+    margin: 0;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: $color-subtle-bg;
+      border: 1px solid $color-border;
+      border-radius: 999px;
+      color: $color-accent;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      @include transition(background, border-color, transform);
+
+      &:hover {
+        background: lighten($color-subtle-bg, 2%);
+        border-color: $color-accent;
+        transform: translateY(-1px);
+      }
+
+      &:visited {
+        color: $color-accent;
+      }
+    }
+  }
+
+  .media-pill__icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .media-pill__text {
+    line-height: 1;
+  }
+}
+
+// ---- Responsive: Media Gallery ----
+
+@include respond-to($bp-sm) {
+  .media-gallery {
+    gap: $sp-sm;
+
+    .media-item {
+      flex: 1 1 100%;
+    }
+  }
+}
