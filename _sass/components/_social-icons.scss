@@ -45,12 +45,19 @@
     background: rgba(0, 0, 0, 0.04);
     color: $color-text;
     transform: translateY(-1px);
+    text-decoration: none;
   }
 
   &:focus {
     outline: 3px solid rgba(10, 102, 194, 0.12);
     outline-offset: 2px;
   }
+}
+
+// Explicitly target the icon elements inside social-icon to ensure color inheritance
+.social-icon i,
+.social-icon svg {
+  color: inherit;
 }
 
 // Social icon text label
@@ -78,45 +85,75 @@
 .social-icon--x {
   color: $color-brand-x;
 
+  i,
+  svg {
+    color: $color-brand-x;
+  }
+
   &:hover {
     background: rgba(29, 161, 242, 0.06);
     color: $color-brand-x;
+    text-decoration: none;
   }
 }
 
 .social-icon--tiktok {
   color: $color-brand-tiktok;
 
+  i,
+  svg {
+    color: $color-brand-tiktok;
+  }
+
   &:hover {
     background: rgba(0, 0, 0, 0.06);
     color: $color-brand-tiktok;
+    text-decoration: none;
   }
 }
 
 .social-icon--facebook {
   color: $color-brand-facebook;
 
+  i,
+  svg {
+    color: $color-brand-facebook;
+  }
+
   &:hover {
     background: rgba(66, 103, 178, 0.06);
     color: $color-brand-facebook;
+    text-decoration: none;
   }
 }
 
 .social-icon--youtube {
   color: $color-brand-youtube;
 
+  i,
+  svg {
+    color: $color-brand-youtube;
+  }
+
   &:hover {
     background: rgba(255, 0, 0, 0.06);
     color: $color-brand-youtube;
+    text-decoration: none;
   }
 }
 
 .social-icon--instagram {
   color: $color-brand-instagram;
 
+  i,
+  svg {
+    color: $color-brand-instagram;
+  }
+
   &:hover {
     background: linear-gradient(45deg, #f58529 0%, #dd2a7b 50%, #8134af 100%);
     color: #fff;
+    text-decoration: none;
   }
 }
 
