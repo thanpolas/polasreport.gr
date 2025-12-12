@@ -27,14 +27,9 @@ permalink: /
         {% if post.media %}
           <ul class="post-media">
             {% for m in post.media %}
-              {% case m.type | downcase %}
-              {% when "image" %}{% assign pre = "📸" %}
-              {% when "video" %}{% assign pre = "📼" %}
-              {% when "audio" %}{% assign pre = "🔉" %}
-              {% else %}{% assign pre = "📎" %}
-              {% endcase %}
+              {% include media-type-icon.html type=m.type %}
               <li class="episode-media-item">
-                  <span class="media-type">{{ pre }}</span>
+                  <span class="media-type">{{ media_icon }}</span>
                 <a href="{{ m.url }}" target="_blank" rel="noopener noreferrer">{{ m.caption | default: m.url }}</a></li>
             {% endfor %}
           </ul>
@@ -56,24 +51,24 @@ permalink: /
         </a>
       </li>
       <li class="channel-item">
-        <a class="channel-link" href="https://youtube.com/@polasreport" target="_blank" rel="noopener noreferrer">
+        <a class="channel-link" href="https://youtube.com/@polas-report" target="_blank" rel="noopener noreferrer">
           <i class="bx bxl-youtube channel-icon" aria-hidden="true"></i>
           <div class="channel-text">
             <div class="channel-title-row">
               <span class="channel-title">YouTube</span>
-              <span class="channel-meta">@polasreport</span>
+              <span class="channel-meta">@polas-report</span>
             </div>
             <div class="channel-desc">Πλήρη επεισόδια και αναλυτικά video με τεκμήρια.</div>
           </div>
         </a>
       </li>
       <li class="channel-item">
-        <a class="channel-link" href="https://www.tiktok.com/@thanpolas_gr" target="_blank" rel="noopener noreferrer">
+        <a class="channel-link" href="https://www.tiktok.com/@thanpolas" target="_blank" rel="noopener noreferrer">
           <i class="bx bxl-tiktok channel-icon" aria-hidden="true"></i>
           <div class="channel-text">
             <div class="channel-title-row">
               <span class="channel-title">TikTok</span>
-              <span class="channel-meta">@thanpolas_gr</span>
+              <span class="channel-meta">@thanpolas</span>
             </div>
             <div class="channel-desc">Σύντομα αποσπάσματα και παρεμβάσεις πάνω στην επικαιρότητα.</div>
           </div>

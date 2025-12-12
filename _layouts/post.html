@@ -77,23 +77,19 @@ layout: default
       {% endif %}
   {% endif %}
 
-  <!-- Media gallery: link-only list using emojis for types (no rendering of assets) -->
+  <!-- Media gallery: horizontal pill list using emojis for types -->
   {% if page.media %}
-    <div class="media-gallery media-gallery--links">
+    <ul class="media-gallery media-gallery--pills">
     {% for m in page.media %}
-      {% assign mtype = m.type | downcase | default: "image" %}
-      {% case mtype %}
-        {% when "image" %}{% assign icon = "🖼️" %}{% assign label = "Image" %}
-        {% when "video" %}{% assign icon = "🎥" %}{% assign label = "Video" %}
-        {% when "audio" %}{% assign icon = "🔉" %}{% assign label = "Audio" %}
-        {% else %}{% assign icon = "📎" %}{% assign label = "Media" %}
-      {% endcase %}
-      <div class="media-item">
-        <span class="media-emoji" aria-hidden="true">{{ icon }}</span>
-        <a href="{{ m.url }}" target="_blank" rel="noopener noreferrer"><strong>{{ label }}:</strong> {{ m.caption | default: m.url }}</a>
-      </div>
+      {% include media-type-icon.html type=m.type %}
+      <li class="media-pill">
+        <a href="{{ m.url }}" target="_blank" rel="noopener noreferrer">
+          <span class="media-pill__icon" aria-hidden="true">{{ media_icon }}</span>
+          <span class="media-pill__text">{{ m.caption | default: m.url }}</span>
+        </a>
+      </li>
     {% endfor %}
-    </div>
+    </ul>
   {% endif %}
 
   <div class="post-content e-content" itemprop="articleBody">

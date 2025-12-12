@@ -1,0 +1,23 @@
+{%- comment -%}
+  Media Type Icon Helper
+
+  Usage: {% include media-type-icon.html type=m.type %}
+
+  Input: type (string) - the media type (image, video, audio)
+  Output: Sets `media_icon` variable with appropriate emoji
+{%- endcomment -%}
+
+{%- assign media_type_lower = include.type | downcase | default: "image" -%}
+{%- case media_type_lower -%}
+  {%- when "image" -%}
+    {%- assign media_icon = "📸" -%}
+  {%- when "video" -%}
+    {%- assign media_icon = "🎥" -%}
+  {%- when "audio" -%}
+    {%- assign media_icon = "🔉" -%}
+  {%- when "website" -%}
+    {%- assign media_icon = "🖥️" -%}
+
+  {%- else -%}
+    {%- assign media_icon = "📎" -%}
+{%- endcase -%}

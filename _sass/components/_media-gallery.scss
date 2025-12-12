@@ -70,6 +70,56 @@
   }
 }
 
+// ---- Media Gallery: Pills Variant ----
+// Horizontal pill layout for compact media links
+
+.media-gallery--pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-sm;
+  margin-bottom: $sp-lg;
+  padding: 0;
+  list-style: none;
+
+  .media-pill {
+    margin: 0;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: $color-subtle-bg;
+      border: 1px solid $color-border;
+      border-radius: 999px;
+      color: $color-accent;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      @include transition(background, border-color, transform);
+
+      &:hover {
+        background: lighten($color-subtle-bg, 2%);
+        border-color: $color-accent;
+        transform: translateY(-1px);
+      }
+
+      &:visited {
+        color: $color-accent;
+      }
+    }
+  }
+
+  .media-pill__icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .media-pill__text {
+    line-height: 1;
+  }
+}
+
 // ---- Responsive: Media Gallery ----
 
 @include respond-to($bp-sm) {
