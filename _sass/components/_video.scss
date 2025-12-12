@@ -2,20 +2,7 @@
 // COMPONENT: Responsive Video Container (YouTube embeds)
 // ============================================================================
 
-.video-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; // 16:9 aspect ratio
+/* ---- Native-sized video: use iframe width/height attributes rather than forced CSS sizing ---- */
+.video-container--native {
   margin-bottom: $sp-lg;
-  overflow: hidden;
-  border-radius: $radius;
-
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
 }

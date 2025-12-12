@@ -1,0 +1,55 @@
+// ============================================================================
+// COMPONENT: Post styles (header, title, meta, video overrides)
+// ============================================================================
+
+// ---- Post header layout ----
+.post-header {
+  margin-bottom: $sp-lg;
+  padding-bottom: $sp-sm;
+  border-bottom: 1px solid $color-border;
+}
+
+// Title styling: tighter letter spacing and confident scale
+.post-title {
+  font-family: $font-ui-sans;
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 0 0 $sp-sm 0;
+  font-size: clamp(1.4rem, 2.25rem, 2.2rem);
+  letter-spacing: -0.02em; // tighter letters
+}
+
+// Publish date – subtle and slightly italic
+.post-meta time,
+.post-meta .dt-published,
+article.post .post-meta time,
+article.post .post-meta .dt-published {
+  display: inline-block;
+  color: $color-text-muted;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+// Post meta actions (social icons) — tighter spacing for inline icons
+article.post .post-meta-actions {
+  gap: $sp-xs; // reduce visual gap between icons
+}
+
+// Make individual icon touch-friendly but more compact
+article.post .post-meta-actions .social-icon {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 0.4rem;
+}
+
+// Content body tweaks for readability
+.post-content {
+  line-height: 1.7;
+  font-size: 1rem;
+  color: $color-text;
+}
+
+@include respond-to($bp-md) {
+  .post-title { font-size: 1.3rem; }
+  article.post .video-container { max-width: 100%; }
+}
