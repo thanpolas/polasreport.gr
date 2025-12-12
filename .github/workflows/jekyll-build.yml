@@ -2,9 +2,9 @@ name: Jekyll Build & Deploy
 
 on:
   push:
-    branches: [ blogify ]
+    branches: [ main ]
   pull_request:
-    branches: [ blogify ]
+    branches: [ main ]
 
 
 jobs:
