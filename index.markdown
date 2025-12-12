@@ -14,37 +14,109 @@ permalink: /
 	</div>
 </section>
 
-## Αρχεία και Δεδομένα
+## Video, Αρχεία και Δεδομένα
 
 <ul class="post-list">
 {% for post in site.posts %}
-	<li>
-		<a href="{{ post.url }}">{{ post.title }}</a>
+	<li class="episode{% if post.media %} has-media{% endif %}{% if forloop.first %} is-featured{% endif %}">
+		<h3 class="episode-title"><a href="{{ post.url }}">{{ post.title }}</a></h3>
 		{% if post.media %}
-		<ul class="post-media">
-			{% for m in post.media %}
-			{% case m.type | downcase %}
-			{% when "image" %}{% assign pre = "🏞️" %}
-			{% when "video" %}{% assign pre = "📼" %}
-			{% else %}{% assign pre = "Media" %}
-			{% endcase %}
-			<li><strong>{{ pre }}:</strong> <a href="{{ m.url }}" target="_blank">{{ m.caption | default: m.url }}</a></li>
-			{% endfor %}
-		</ul>
+			<ul class="post-media">
+				{% for m in post.media %}
+					{% case m.type | downcase %}
+					{% when "image" %}{% assign pre = "🏞️" %}
+					{% when "video" %}{% assign pre = "📼" %}
+					{% when "audio" %}{% assign pre = "🔉" %}
+					{% else %}{% assign pre = "📎" %}
+					{% endcase %}
+					<li class="episode-media-item"><strong class="media-type">{{ pre }}</strong> <a href="{{ m.url }}" target="_blank" rel="noopener noreferrer">{{ m.caption | default: m.url }}</a></li>
+				{% endfor %}
+			</ul>
 		{% endif %}
 	</li>
 {% endfor %}
 </ul>
 
-* [Polas Spectrum - Μοντέλο Αξιών Κομμάτων](/polas-spectrum)
 
-## Τα Στοιχεία μου
+## Παρουσία & Κανάλια
 
-* Support me on [Patreon](https://www.patreon.com/PolasReport){:target="_blank"}
-* YouTube: [@polasreport](https://www.youtube.com/@polas-report){:target="_blank"}
-* TikTok: [@thanpolas_gr](https://www.tiktok.com/@thanpolas){:target="_blank"}
-* Twitter: [@thanpolas_gr](https://twitter.com/thanpolas_gr){:target="_blank"}
-* Facebook: [than.polas](https://www.facebook.com/than.polas){:target="_blank"}
-* Instagram: [@thanpolas](https://www.instagram.com/thanpolas){:target="_blank"}
+<ul class="channels">
+	<li class="channel-item">
+		<a class="channel-link " href="https://patreon.com/polasreport" target="_blank" rel="noopener noreferrer">
+			<i class="bx bxl-patreon channel-icon" aria-hidden="true"></i>
+			<div class="channel-text">
+				<div class="channel-title-row">
+					<span class="channel-title">Patreon</span>
+				</div>
+				<div class="channel-desc">Στήριξε την ανεξάρτητη παραγωγή του Polas Report.</div>
+			</div>
+		</a>
+	</li>
+
+	<li class="channel-item">
+		<a class="channel-link" href="https://youtube.com/@polasreport" target="_blank" rel="noopener noreferrer">
+			<i class="bx bxl-youtube channel-icon" aria-hidden="true"></i>
+			<div class="channel-text">
+				<div class="channel-title-row">
+					<span class="channel-title">YouTube</span>
+					<span class="channel-meta">@polasreport</span>
+				</div>
+				<div class="channel-desc">Πλήρη επεισόδια και αναλυτικά video με τεκμήρια.</div>
+			</div>
+		</a>
+	</li>
+
+	<li class="channel-item">
+		<a class="channel-link" href="https://www.tiktok.com/@thanpolas_gr" target="_blank" rel="noopener noreferrer">
+			<i class="bx bxl-tiktok channel-icon" aria-hidden="true"></i>
+			<div class="channel-text">
+				<div class="channel-title-row">
+					<span class="channel-title">TikTok</span>
+					<span class="channel-meta">@thanpolas_gr</span>
+				</div>
+				<div class="channel-desc">Σύντομα αποσπάσματα και παρεμβάσεις πάνω στην επικαιρότητα.</div>
+			</div>
+		</a>
+	</li>
+
+	<li class="channel-item">
+		<a class="channel-link" href="https://x.com/thanpolas_gr" target="_blank" rel="noopener noreferrer">
+			<i class="bx bxl-twitter channel-icon" aria-hidden="true"></i>
+			<div class="channel-text">
+				<div class="channel-title-row">
+					<span class="channel-title">X (Twitter)</span>
+					<span class="channel-meta">@thanpolas_gr</span>
+				</div>
+				<div class="channel-desc">Threads, σχόλια και δημόσια αντιπαράθεση με στοιχεία.</div>
+			</div>
+		</a>
+	</li>
+
+	<li class="channel-item">
+		<a class="channel-link" href="https://facebook.com/than.polas" target="_blank" rel="noopener noreferrer">
+			<i class="bx bxl-facebook channel-icon" aria-hidden="true"></i>
+			<div class="channel-text">
+				<div class="channel-title-row">
+					<span class="channel-title">Facebook</span>
+					<span class="channel-meta">than.polas</span>
+				</div>
+				<div class="channel-desc">Αναρτήσεις, video και συζήτηση με το ευρύτερο κοινό.</div>
+			</div>
+		</a>
+	</li>
+
+	<li class="channel-item">
+		<a class="channel-link" href="https://instagram.com/thanpolas" target="_blank" rel="noopener noreferrer">
+			<i class="bx bxl-instagram channel-icon" aria-hidden="true"></i>
+			<div class="channel-text">
+				<div class="channel-title-row">
+					<span class="channel-title">Instagram</span>
+					<span class="channel-meta">@thanpolas</span>
+				</div>
+				<div class="channel-desc">Ανακοινώσεις και επιλεγμένα αποσπάσματα.</div>
+			</div>
+		</a>
+	</li>
+</ul>
 
 

@@ -8,7 +8,10 @@
   padding-left: $sp-lg;
 
   > li {
-    margin-bottom: 0.65rem;
+    margin-bottom: 1rem;
+    padding: $sp-sm 0;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    position: relative; /* for pseudo-elements like the left accent */
   }
 
   a {
@@ -16,9 +19,23 @@
     color: $color-text;
   }
 
+  /* Episode-level title */
+  .episode-title {
+    margin: 0 0 $sp-xs 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  /* Blue vertical accent for episodes with media */
+  .episode.has-media {
+    border-left: 3px solid rgba(58, 134, 255, 0.45); /* #3A86FF, 45% */
+    padding-left: $sp-md; /* keep text away from the accent */
+    margin-left: -($sp-md / 2); /* visually align with list */
+  }
+
   // Nested media sub-list
   .post-media {
-    list-style-type: circle;
+    list-style: none; /* remove default bullets for the asset list */
     margin: 0.35rem 0 0 1.5rem;
     padding-left: 0;
 
@@ -28,10 +45,33 @@
       margin-bottom: 0.125rem;
     }
 
+    /* Style asset items to look like data artifacts */
+    .episode-media-item {
+      list-style: none; /* remove bullets */
+      display: inline-block;
+      background: rgba(58, 80, 107, 0.06); /* navy-light at ~6% opacity */
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.35rem;
+      margin-right: 0.5rem;
+    }
+
     strong {
       font-weight: 600;
       margin-right: 0.4rem;
       color: $color-text;
     }
   }
+}
+
+/* Gold dot for the featured (first) episode */
+.post-list .episode.is-featured .episode-title::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #FFD60A;
+  border-radius: 50%;
+  margin-right: 0.55rem;
+  transform: translateY(-2px);
 }

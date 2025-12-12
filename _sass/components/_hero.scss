@@ -9,6 +9,7 @@
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+  margin-bottom: 25px;
   width: 100vw;
   background: linear-gradient(180deg, $color-header-bg 0%, #3A506B 100%);
   color: $color-header-text;
@@ -50,7 +51,7 @@
 }
 
 .hero-cta {
-  margin-top: $sp-sm;
+  margin-top: $sp-2xl;
   display: flex;
   gap: 0.6rem;
   flex-direction: column; /* stack CTA vertically with button first, link below */

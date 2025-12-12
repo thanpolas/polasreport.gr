@@ -1,0 +1,67 @@
+// ============================================================================
+// COMPONENT: Channels / Distribution (Homepage)
+// ============================================================================
+
+.channels {
+  display: grid;
+  gap: $sp-sm;
+  margin: 0 0 $sp-md 0;
+  padding: 0;
+  list-style: none;
+}
+
+.channel-item { margin: 0; }
+
+.channel-link {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid rgba(10,10,10,0.08);
+  border-radius: 10px;
+  color: $color-text;
+  text-decoration: none;
+  transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.channel-link:hover,
+.channel-link:focus {
+  background: rgba(58,80,107,0.06); /* navy-light at ~6% */
+  transform: translateY(-1px);
+}
+
+.channel-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  font-size: 22px; /* icon size */
+  color: rgba(10,10,10,0.7); /* dark at 70% */
+}
+
+.channel-text { flex: 1 1 auto; }
+
+.channel-title-row { display: flex; gap: 0.5rem; align-items: baseline; }
+.channel-title { font-weight: 700; }
+.channel-meta { margin-left: auto; color: $color-text-muted; font-size: 0.95rem; }
+.channel-desc { margin-top: 0.25rem; color: rgba(55,65,81,0.9); font-size: 0.95rem; }
+
+/* Patreon highlight */
+.channel-link.is-patreon {
+  border-left: 6px solid #FFD60A;
+  background: rgba(255,214,10,0.03);
+}
+
+.channel-link.is-patreon .channel-icon { color: #FFD60A; }
+.channel-link.is-patreon:hover { background: rgba(255,214,10,0.06); }
+
+/* Interaction: icon turns blue on hover (non-patreon) */
+.channel-link:hover .channel-icon { color: #3A86FF; }
+.channel-link.is-patreon:hover .channel-icon { color: #FFD60A; }
+
+/* Responsive: stack title/meta on small screens */
+@include respond-to($bp-md) {
+  .channel-title-row { flex-direction: column; align-items: flex-start; gap: 0.15rem; }
+  .channel-meta { margin-left: 0; }
+}
