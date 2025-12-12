@@ -1,0 +1,26 @@
+// ============================================================================
+// RESPONSIVE: Media queries and responsive utility adjustments
+// ============================================================================
+
+// ---- Small screens (up to 640px) ----
+
+@include respond-to($bp-sm) {
+  th,
+  td {
+    padding: $sp-sm;
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+// ---- Medium screens (up to 720px) ----
+
+@include respond-to($bp-md) {
+  .container {
+    padding-left: $sp-md;
+    padding-right: $sp-md;
+  }
+}

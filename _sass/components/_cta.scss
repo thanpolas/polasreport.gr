@@ -1,0 +1,112 @@
+// ============================================================================
+// COMPONENT: Call-to-Action (Patreon CTAs)
+// ============================================================================
+
+// ---- Patreon CTA Base ----
+
+.patreon-cta {
+  border-radius: $radius;
+  box-sizing: border-box;
+}
+
+// ---- Subtle CTA (top of page, inline) ----
+
+.patreon-cta--subtle {
+  background: #fff9f0;
+  border: 1px solid #f1e0d0;
+  padding: 0.6rem 0.9rem;
+  margin-bottom: $sp-md;
+  color: $color-text;
+  font-size: 0.95rem;
+
+  a {
+    color: $color-accent;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+}
+
+// ---- Large CTA (bottom of post, card-style) ----
+
+.patreon-cta--large {
+  background: #fafafa;
+  border: 1px solid $color-border;
+  margin-top: $sp-2xl;
+  padding: $sp-lg;
+  text-align: center;
+}
+
+.patreon-button {
+  display: inline-block;
+  background: #ff4500;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: $radius;
+  font-weight: 700;
+  text-decoration: none;
+  @include transition(background-color);
+
+  &:hover {
+    background: #e43b00;
+  }
+}
+
+// ---- Inline CTAs (used in templates) ----
+
+.patreon-inline {
+  display: block;
+  text-align: center;
+  font-weight: 400;
+  color: $color-text;
+  font-size: 0.95rem;
+}
+
+// Top inline CTA
+.patreon-inline--top {
+  background: #f7f7f7;
+  padding: $sp-md;
+  margin-bottom: $sp-md;
+  border: none;
+  border-radius: $radius;
+  color: $color-text-muted;
+  box-shadow: $shadow-sm;
+
+  a {
+    color: rgba(10, 102, 194, 0.85);
+    text-decoration: none;
+    font-weight: 400;
+    @include transition(text-decoration);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Bottom inline CTA
+.patreon-inline--bottom {
+  background: #f2f2f2;
+  padding: $sp-lg;
+  margin-top: 1.75rem;
+  border: none;
+  border-radius: 8px;
+
+  .patreon-link {
+    color: rgba(10, 102, 194, 0.95);
+    text-decoration: none;
+    display: inline-block;
+    padding: $sp-sm 0.75rem;
+    border-radius: $radius;
+    font-weight: 600;
+    @include transition(text-decoration);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .patreon-copy {
+    margin: 0 0 $sp-sm;
+    font-weight: 400;
+  }
+}

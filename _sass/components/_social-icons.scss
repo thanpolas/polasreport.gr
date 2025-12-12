@@ -1,0 +1,129 @@
+// ============================================================================
+// COMPONENT: Social Icons & Post Meta Actions
+// ============================================================================
+
+// ---- Post Meta Actions (flex container for social links) ----
+
+.post-meta-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 0.65rem;
+  gap: $sp-sm;
+
+  .social-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+}
+
+// ---- Social Icon Base ----
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 30px;
+  border-radius: $radius;
+  background: transparent;
+  color: $color-text-muted;
+  text-decoration: none;
+  padding: 0 $sp-sm;
+  @include transition(background-color, color, transform);
+
+  i,
+  svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: $color-text;
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: 3px solid rgba(10, 102, 194, 0.12);
+    outline-offset: 2px;
+  }
+}
+
+// Social icon text label
+.social-text {
+  font-weight: 600;
+  display: inline-block;
+}
+
+// Post video label
+.post-video {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+// YouTube link style
+.youtube-link {
+  color: $color-brand-youtube;
+  font-weight: 600;
+}
+
+// ---- Brand-Specific Variants ----
+// BEM: .social-icon--[brand]
+
+.social-icon--x {
+  color: $color-brand-x;
+
+  &:hover {
+    background: rgba(29, 161, 242, 0.06);
+    color: $color-brand-x;
+  }
+}
+
+.social-icon--tiktok {
+  color: $color-brand-tiktok;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: $color-brand-tiktok;
+  }
+}
+
+.social-icon--facebook {
+  color: $color-brand-facebook;
+
+  &:hover {
+    background: rgba(66, 103, 178, 0.06);
+    color: $color-brand-facebook;
+  }
+}
+
+.social-icon--youtube {
+  color: $color-brand-youtube;
+
+  &:hover {
+    background: rgba(255, 0, 0, 0.06);
+    color: $color-brand-youtube;
+  }
+}
+
+.social-icon--instagram {
+  color: $color-brand-instagram;
+
+  &:hover {
+    background: linear-gradient(45deg, #f58529 0%, #dd2a7b 50%, #8134af 100%);
+    color: #fff;
+  }
+}
+
+// ---- Responsive: Hide social text on small screens ----
+
+@include respond-to($bp-md) {
+  .social-icon .social-text {
+    display: none;
+  }
+}

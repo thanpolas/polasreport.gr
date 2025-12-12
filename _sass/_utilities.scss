@@ -1,0 +1,12 @@
+// ============================================================================
+// UTILITIES: Reusable utility classes (margin, padding, text alignment)
+// ============================================================================
+
+.center {
+  text-align: center;
+}
+
+.small {
+  font-size: 0.9rem;
+  color: $color-text-muted;
+}

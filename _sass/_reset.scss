@@ -1,0 +1,32 @@
+// ============================================================================
+// RESET & BASE STYLES
+// ============================================================================
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: $color-body-bg;
+  color: $color-text;
+  font-family: $font-ui-sans;
+  line-height: 1.6;
+  @include font-smoothing;
+  font-size: 16px;
+}
+
+a {
+  color: $color-accent;
+  text-decoration: none;
+  @include transition(color);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

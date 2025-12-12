@@ -17,6 +17,20 @@ Build & dev workflows (exact commands)
   - `docker compose up --build` (or `docker-compose up --build`)
   - The compose file maps ports `4000` (site) and `35729` (livereload). Set `JEKYLL_GITHUB_TOKEN` in env when needed.
 
+Stylesheet architecture (SCSS + BEM)
+- Source: `_sass/` (Jekyll compiles to `assets/css/main.css`)
+- Entry point: `assets/css/main.scss` (imports `_sass/main.scss`)
+- Main structure: `_sass/main.scss` imports all partials in order:
+  - `_variables.scss` (colors, spacing, fonts, breakpoints, mixins)
+  - `_reset.scss`, `_typography.scss`, `_layout.scss` (base styles)
+  - `components/` folder (header, footer, post-list, media-gallery, video, social-icons, cta)
+  - `_utilities.scss` (utility classes)
+  - `_polas-spectrum.scss` (page-specific overrides)
+  - `_responsive.scss` (media queries)
+- Naming: BEM convention (`.component__element--modifier`) for clarity
+- Variables: All colors, spacing, breakpoints centralized in `_variables.scss`
+- Mixins: `@include respond-to($breakpoint)` for media queries, `@include transition()` for smooth interactions
+
 Project-specific conventions
 - Front matter: posts use standard Jekyll front matter. The site uses a `media` front-matter array in some posts (see `index.markdown` loop expecting `post.media` with `type`, `url`, and optional `caption`).
 - Future posts: `_config.yml` has `future: true`, so future-dated posts are included in builds.

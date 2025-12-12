@@ -1,0 +1,111 @@
+// ============================================================================
+// COMPONENT: Header & Navigation
+// ============================================================================
+
+.site-header,
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: $color-header-bg;
+  border-bottom: 1px solid $color-header-border;
+  box-shadow: $shadow-sm;
+  backdrop-filter: blur(4px);
+}
+
+// ---- Header Inner (flex container) ----
+
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 $sp-md;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $sp-lg;
+  box-sizing: border-box;
+}
+
+// ---- Site Title / Brand ----
+
+.site-title {
+  font-weight: 700;
+  color: $color-header-text;
+  -webkit-text-fill-color: $color-header-text;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Arial Black", sans-serif;
+  text-decoration: none;
+  font-size: 1.15rem;
+  line-height: 1;
+  @include font-smoothing;
+  @include transition(text-decoration);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ---- Brand Logo (with text-stroke effect) ----
+
+.brand-logo {
+  font-size: 28px;
+}
+
+// Use native text-stroke for crisp gold edge
+@supports (-webkit-text-stroke: 1px) {
+  .brand-logo {
+    -webkit-text-stroke: 1px #ffd60a;
+    -webkit-text-fill-color: $color-header-text;
+  }
+}
+
+// Fallback when text-stroke isn't supported
+@supports not (-webkit-text-stroke: 1px) {
+  .brand-logo {
+    font-weight: 900;
+    text-shadow: 1px 0 #ffd60a, -1px 0 #ffd60a, 0 1px #ffd60a, 0 -1px #ffd60a;
+  }
+}
+
+// ---- Navigation ----
+
+.site-nav {
+  ul {
+    display: flex;
+    gap: $sp-lg;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    align-items: center;
+  }
+
+  a {
+    color: $color-header-text-secondary;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.98rem;
+    @include transition(color);
+
+    &:hover,
+    &:focus {
+      color: $color-header-text;
+    }
+  }
+}
+
+// ---- Responsive: Header ----
+
+@include respond-to($bp-md) {
+  .header-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $sp-sm;
+  }
+
+  .site-nav {
+    ul {
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: $sp-sm;
+    }
+  }
+}

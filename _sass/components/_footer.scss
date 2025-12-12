@@ -1,0 +1,12 @@
+// ============================================================================
+// COMPONENT: Footer
+// ============================================================================
+
+.site-footer,
+footer {
+  margin-top: $sp-2xl;
+  padding-top: $sp-md;
+  border-top: 1px solid $color-border;
+  color: $color-text-muted;
+  font-size: 0.95rem;
+}
