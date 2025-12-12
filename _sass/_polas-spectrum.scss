@@ -33,28 +33,7 @@ img[src*="/polas-spectrum/assets/"] {
 
 // ---- Chart Download Links ----
 
-a[href*="/polas-spectrum/assets/"] {
-  display: inline-block;
-  margin: $sp-xs 0 $sp-lg;
-  color: $color-accent;
-  background: rgba(10, 102, 194, 0.04);
-  padding: $sp-xs 0.6rem;
-  border-radius: $radius;
-  font-weight: 600;
-  text-decoration: none;
-  border: 1px solid rgba(10, 102, 194, 0.08);
-  @include transition(background-color);
 
-  &:hover {
-    background: rgba(10, 102, 194, 0.09);
-    text-decoration: none;
-  }
-
-  &:focus {
-    outline: 3px solid rgba(10, 102, 194, 0.15);
-    outline-offset: 3px;
-  }
-}
 
 // Chart images in tables (thumbnails)
 table img[src*="/polas-spectrum/assets/"] {

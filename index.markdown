@@ -20,18 +20,22 @@ permalink: /
     <h2>Video, Αρχεία και Δεδομένα</h2>
     <ul class="post-list">
     {% for post in site.posts %}
-      <li class="episode{% if post.media %} has-media{% endif %}{% if forloop.first %} is-featured{% endif %}">
-        <h3 class="episode-title"><a href="{{ post.url }}">{{ post.title }}</a></h3>
+      <li class="episode has-media">
+        <h3 class="episode-title">
+          <a href="{{ post.url }}" class="post-list-title-link">{{ post.title }}</a>
+        </h3>
         {% if post.media %}
           <ul class="post-media">
             {% for m in post.media %}
               {% case m.type | downcase %}
-              {% when "image" %}{% assign pre = "🏞️" %}
+              {% when "image" %}{% assign pre = "📸" %}
               {% when "video" %}{% assign pre = "📼" %}
               {% when "audio" %}{% assign pre = "🔉" %}
               {% else %}{% assign pre = "📎" %}
               {% endcase %}
-              <li class="episode-media-item"><strong class="media-type">{{ pre }}</strong> <a href="{{ m.url }}" target="_blank" rel="noopener noreferrer">{{ m.caption | default: m.url }}</a></li>
+              <li class="episode-media-item">
+                  <span class="media-type">{{ pre }}</span>
+                <a href="{{ m.url }}" target="_blank" rel="noopener noreferrer">{{ m.caption | default: m.url }}</a></li>
             {% endfor %}
           </ul>
         {% endif %}
