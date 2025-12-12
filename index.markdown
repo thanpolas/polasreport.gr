@@ -14,7 +14,6 @@ permalink: /
 	</div>
 </section>
 
-<!-- center page content inside the container (max width + side padding) -->
 <div class="container frontpage-content">
   <main role="main" id="content">
     <h2>Video, Αρχεία και Δεδομένα</h2>
