@@ -1,0 +1,80 @@
+// ============================================================================
+// COMPONENT: Homepage Hero
+// ============================================================================
+
+.hero {
+  /* Full-bleed hero spanning the viewport. The inner .container keeps content centered. */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  background: linear-gradient(180deg, $color-header-bg 0%, #3A506B 100%);
+  color: $color-header-text;
+  padding: $sp-2xl 0 $sp-xl; // top/bottom
+}
+
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  gap: $sp-sm;
+  /* Ensure content respects the main container spacing — if `.container` isn't used inside the hero, hero-inner can provide internal padding */
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.hero-kicker {
+  font-family: $font-ui-sans;
+  font-weight: 700;
+  font-variant: small-caps;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  color: $color-header-text;
+}
+
+.hero-title {
+  font-family: $font-ui-sans;
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(1.25rem, 2.25rem, 2.25rem);
+  line-height: 1.05;
+  margin: 0;
+  text-shadow: -1px -1px 0 #000, 1px 1px 0 #000, 0 0 10px rgba(10, 102, 194, 0.55);
+}
+
+.hero-desc {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.hero-cta {
+  margin-top: $sp-sm;
+  display: flex;
+  gap: 0.6rem;
+  flex-direction: column; /* stack CTA vertically with button first, link below */
+  align-items: flex-start; /* keep left aligned */
+}
+
+.hero .patreon-button {
+  background: #FFD60A;
+  color: #0A0A0A;
+  padding: 10px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-block;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.06);
+}
+
+.hero .patreon-button:hover { background: #ffe86b; }
+.hero .patreon-button:focus { outline: 3px solid rgba(10, 102, 194, 0.12); outline-offset: 2px; }
+.hero .hero-cta--link { color: #0A0A0A; background: #FFD60A; text-decoration: none; font-weight: 700; padding: 6px 12px; border-radius: 999px; font-size: 0.95rem; display:inline-block; }
+.hero .hero-cta--link:hover { background: lighten(#FFD60A, 8%); }
+
+@include respond-to($bp-md) {
+  .hero { padding: $sp-lg 0 $sp-sm; }
+  .hero-title { font-size: 1.3rem; }
+  .hero-cta { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+}

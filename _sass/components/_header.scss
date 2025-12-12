@@ -19,6 +19,7 @@ header {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 $sp-md;
+  padding-top: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -47,23 +48,25 @@ header {
 // ---- Brand Logo (with text-stroke effect) ----
 
 .brand-logo {
-  font-size: 28px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: $color-header-text;
 }
 
-// Use native text-stroke for crisp gold edge
+.brand-logo svg { display: block; height: 32px; width: auto; vertical-align: middle; }
+
+/* Fallback (visible only if SVG is unavailable for some reason) */
+/* Show fallback by default, hide it when the inline SVG is present (svg + sibling hides fallback) */
+.brand-logo__fallback { display: inline-block; color: $color-header-text; font-weight: 800; letter-spacing: 0.06em; text-transform: none; @include font-smoothing; }
+.brand-logo svg + .brand-logo__fallback { display: none; }
+
+/* Keep the old text-stroke fallback rules for browsers where SVG isn't used or not rendered */
 @supports (-webkit-text-stroke: 1px) {
-  .brand-logo {
-    -webkit-text-stroke: 1px #ffd60a;
-    -webkit-text-fill-color: $color-header-text;
-  }
+  .brand-logo__fallback { -webkit-text-stroke: 1px #ffd60a; -webkit-text-fill-color: $color-header-text; }
 }
-
-// Fallback when text-stroke isn't supported
 @supports not (-webkit-text-stroke: 1px) {
-  .brand-logo {
-    font-weight: 900;
-    text-shadow: 1px 0 #ffd60a, -1px 0 #ffd60a, 0 1px #ffd60a, 0 -1px #ffd60a;
-  }
+  .brand-logo__fallback { text-shadow: 1px 0 #ffd60a, -1px 0 #ffd60a, 0 1px #ffd60a, 0 -1px #ffd60a; font-weight: 900; }
 }
 
 // ---- Navigation ----

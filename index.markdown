@@ -4,10 +4,15 @@ description: "Personal notes and reports"
 permalink: /
 ---
 
-Καλώς ήρθατε στsssο polasreport.gr
-
-Δεν υπάρχουν πολλά πράγματα ακόμα, προς το παρών τα στοιχεία μου και αρχεία από τα βίντεο που αναφέρω στο κανάλι μου στο TikTok.
-
+<section class="hero" role="region" aria-label="Polas Report hero">
+	<div class="container hero-inner">
+		<h1 class="hero-title">Πολιτικός Σχολιασμός με Στοιχεία, όχι Συνθήματα</h1>
+		<p class="hero-desc">Αποδομούμε αφηγήματα με στοιχεία, πίνακες και τεκμήρια, για να ξέρεις τι ισχύει και τι όχι.</p>
+		<div class="hero-cta">
+			<a class="patreon-button" href="https://patreon.com/polasreport" target="_blank" rel="noopener noreferrer" aria-label="Στήριξέ το στο Patreon">Στήριξε με στο Patreon</a>
+		</div>
+	</div>
+</section>
 
 ## Αρχεία και Δεδομένα
 
