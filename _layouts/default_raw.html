@@ -20,7 +20,9 @@
   <!-- Icon font (Boxicons) for social icons - loaded site-wide once -->
   <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
 
-  <!-- ...existing code... (additional head includes) -->
+  {% if page.page_js %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uplot@1.6.31/dist/uPlot.min.css">
+  {% endif %}
 </head>
 <body>
   <!-- include persistent header -->
@@ -32,6 +34,9 @@
   <!-- include site footer -->
   {% include footer.html %}
 
-  <!-- ...existing code... (scripts, analytics fallbacks, other includes) -->
+  {% if page.page_js %}
+  <script src="https://cdn.jsdelivr.net/npm/uplot@1.6.31/dist/uPlot.iife.min.js"></script>
+  <script type="module" src="{{ '/assets/js/pages/' | append: page.page_js | append: '.js' | relative_url }}"></script>
+  {% endif %}
 </body>
 </html>

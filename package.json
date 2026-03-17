@@ -1,0 +1,11 @@
+{
+  "name": "polasreport.gr",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fuel:extract": "node _scripts/extract_fuel_prices.mjs",
+    "fuel:brent": "node _scripts/fetch_brent_prices.mjs",
+    "fuel:json": "node _scripts/generate_fuel_json.mjs",
+    "fuel:update": "npm run fuel:brent && npm run fuel:extract && npm run fuel:json"
+  }
+}

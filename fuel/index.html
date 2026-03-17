@@ -1,0 +1,112 @@
+---
+layout: default
+title: "Τιμές Καυσίμων Ελλάδας"
+description: "Ημερήσιες τιμές βενζίνης και πετρελαίου στην Ελλάδα, σε σύγκριση με τη διεθνή τιμή αργού πετρελαίου Brent."
+page_js: fuel-charts
+permalink: /fuel/
+---
+
+<!-- SECTION 1: Today's Prices -->
+<section class="fuel-section" id="prices">
+  <div class="fuel-hero-card" id="fuel-hero">
+    <div class="fuel-chart-skeleton" style="height:140px" id="fuel-hero-skeleton"></div>
+  </div>
+
+  <div class="fuel-cards" id="fuel-secondary-cards">
+    <div class="fuel-chart-skeleton" style="height:100px"></div>
+    <div class="fuel-chart-skeleton" style="height:100px"></div>
+    <div class="fuel-chart-skeleton" style="height:100px"></div>
+  </div>
+
+  <p class="fuel-updated" id="fuel-updated"></p>
+</section>
+
+<!-- SECTION 2: Price History -->
+<section class="fuel-section" id="history">
+  <h2 class="fuel-section-title">Ιστορικό Τιμών</h2>
+
+  <div class="fuel-charts-row">
+    <div class="fuel-chart-wrap">
+      <div class="fuel-chart-title">Αμόλυβδη 95 (EUR/λίτρο)</div>
+      <div class="fuel-chart-container" id="chart-unleaded95">
+        <div class="fuel-chart-skeleton"></div>
+      </div>
+    </div>
+
+    <div class="fuel-chart-wrap">
+      <div class="fuel-chart-title">Brent Crude (USD/βαρέλι)</div>
+      <div class="fuel-chart-container" id="chart-brent">
+        <div class="fuel-chart-skeleton"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="fuel-chart-note">Σημείωση: Οι τιμές καυσίμων είναι σε EUR/λίτρο (μέσος εθνικός όρος). Το Brent crude σε USD/βαρέλι. Η σύγκριση γίνεται μέσω ημερήσιων ποσοστιαίων μεταβολών (%).</p>
+</section>
+
+<!-- SECTION 3: Daily Comparison -->
+<section class="fuel-section" id="comparison">
+  <h2 class="fuel-section-title">Πόσο Ακολουθεί η Αντλία το Αργό;</h2>
+
+  <div class="fuel-analysis-intro">
+    <p>Ημερήσια ποσοστιαία μεταβολή τιμής στην αντλία (<strong style="color:#e63946">κόκκινο</strong>, αριστερός άξονας) και αργού πετρελαίου (<strong style="color:#2a9d8f">πράσινο</strong>, δεξιός άξονας). Εξομαλυμένο με μέσο όρο 5 ημερών. Πατήστε «Ημερήσια δεδομένα» για τα ακατέργαστα στοιχεία.</p>
+    <p class="fuel-chart-note">Προσοχή: οι δύο άξονες έχουν διαφορετική κλίμακα. Η οπτική σύγκριση μεγεθών μεταξύ τους δεν είναι ακριβής. Η γραμμή «Διαφορά» στο tooltip δείχνει την πραγματική απόκλιση.</p>
+  </div>
+
+  <div class="fuel-chart-wrap">
+    <div class="fuel-chart-container" id="chart-daily-pct">
+      <div class="fuel-chart-skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: Rockets and Feathers -->
+<section class="fuel-section" id="analysis">
+  <h2 class="fuel-section-title">Ρουκέτες και Φτερά</h2>
+
+  <div class="fuel-analysis-intro">
+    <p>Το παρακάτω διάγραμμα αθροίζει τη «Διαφορά» του παραπάνω: (μεταβολή αντλίας %) μείον (μεταβολή αργού %), ημέρα με ημέρα. Πάνω από το 0 = η αντλία αυξάνεται περισσότερο. Κάτω = λιγότερο. Μηδενίζεται στην αρχή κάθε περιόδου.</p>
+  </div>
+
+  <div id="fuel-spread-annotation"></div>
+
+  <div class="fuel-chart-wrap">
+    <div class="fuel-chart-container" id="chart-cumulative">
+      <div class="fuel-chart-skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: Open Data -->
+<section class="fuel-section" id="data">
+  <h2 class="fuel-section-title">Ανοιχτά Δεδομένα: Κατεβάστε τα</h2>
+
+  <p>Όλα τα δεδομένα που χρησιμοποιούμε είναι ελεύθερα διαθέσιμα. Μπορείτε να τα κατεβάσετε και να τα αναλύσετε μόνοι σας.</p>
+
+  <ul class="fuel-downloads">
+    <li class="fuel-download-item">
+      <a class="fuel-download-link" href="/assets/data/fuel_prices.csv" download>
+        <i class="bx bx-download" aria-hidden="true"></i>
+        Τιμές καυσίμων Ελλάδας (CSV)
+      </a>
+    </li>
+    <li class="fuel-download-item">
+      <a class="fuel-download-link" href="/assets/data/brent_prices.csv" download>
+        <i class="bx bx-download" aria-hidden="true"></i>
+        Τιμές Brent Crude (CSV)
+      </a>
+    </li>
+    <li class="fuel-download-item">
+      <a class="fuel-download-link" href="/assets/data/fuel-chart.json" download>
+        <i class="bx bx-download" aria-hidden="true"></i>
+        Ενοποιημένα δεδομένα ανάλυσης (JSON)
+      </a>
+    </li>
+  </ul>
+
+  <div class="fuel-methodology">
+    <p><strong>Πηγές δεδομένων:</strong> Τιμές καυσίμων από <a href="https://www.fuelprices.gr/deltia_d.view" target="_blank" rel="noopener">fuelprices.gr</a> (Υπουργείο Ανάπτυξης). Τιμές Brent crude από <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">FRED</a> (Federal Reserve Bank of St. Louis).</p>
+    <p><strong>Συχνότητα ενημέρωσης:</strong> Καθημερινά. Οι τιμές καυσίμων αντιπροσωπεύουν τον σταθμισμένο εθνικό μέσο όρο. Η τιμή Brent είναι η τιμή κλεισίματος των futures.</p>
+    <p><strong>Άδεια:</strong> <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, ελεύθερη χρήση με αναφορά.</p>
+  </div>
+</section>

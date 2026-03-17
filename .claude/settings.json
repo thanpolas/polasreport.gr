@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.cmegroup.com)",
+      "Bash(node /Users/thanpolas/Projects/polasreport.gr/_scripts/generate_fuel_json.mjs)",
+      "Bash(node -e \":*)"
+    ]
+  }
+}

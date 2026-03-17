@@ -1,0 +1,368 @@
+// ============================================================================
+// FUEL PAGE: Price cards, chart containers, range buttons, open data
+// ============================================================================
+
+// ---- Section spacing ----
+.fuel-section {
+  margin-bottom: $sp-2xl * 2;
+}
+
+.fuel-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: $sp-lg;
+}
+
+// ---- Hero price card (Unleaded 95) ----
+.fuel-hero-card {
+  border-radius: $radius * 2;
+  padding: $sp-xl $sp-2xl;
+  text-align: center;
+  box-shadow: $shadow-md;
+  margin-bottom: $sp-xl;
+
+  &--green  { background: rgba(42, 157, 143, 0.12); }
+  &--amber  { background: rgba(233, 196, 106, 0.18); }
+  &--red    { background: rgba(230, 57, 70, 0.12); }
+}
+
+.fuel-hero-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-text-muted;
+  margin-bottom: $sp-xs;
+}
+
+.fuel-hero-price {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: $sp-sm;
+}
+
+.fuel-hero-delta {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: $sp-xs;
+
+  &--up   { color: #c1121f; }
+  &--down { color: #2a9d8f; }
+}
+
+.fuel-hero-avg {
+  font-size: 0.8rem;
+  color: $color-text-muted;
+}
+
+// ---- Secondary price cards ----
+.fuel-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: $sp-md;
+  margin-bottom: $sp-lg;
+}
+
+.fuel-card {
+  border-radius: $radius * 2;
+  padding: $sp-lg $sp-md;
+  text-align: center;
+  box-shadow: $shadow-sm;
+
+  &--green  { background: rgba(42, 157, 143, 0.08); }
+  &--amber  { background: rgba(233, 196, 106, 0.12); }
+  &--red    { background: rgba(230, 57, 70, 0.08); }
+}
+
+.fuel-card-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $color-text-muted;
+  margin-bottom: $sp-xs;
+}
+
+.fuel-card-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: $sp-xs;
+}
+
+.fuel-card-delta {
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &--up   { color: #c1121f; }
+  &--down { color: #2a9d8f; }
+}
+
+// ---- Update timestamp ----
+.fuel-updated {
+  font-size: 0.8rem;
+  color: $color-text-muted;
+  margin-bottom: $sp-2xl;
+}
+
+// ---- Chart containers ----
+.fuel-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $sp-xl;
+  margin-bottom: $sp-xl;
+
+  @include respond-to($bp-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fuel-chart-wrap {
+  margin-bottom: $sp-xl;
+}
+
+.fuel-chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: $sp-sm;
+}
+
+.fuel-chart-container {
+  position: relative;
+  width: 100%;
+  max-width: $max-chart-width;
+  background: $color-body-bg;
+}
+
+// ---- Series toggle buttons ----
+.fuel-toggles {
+  display: flex;
+  gap: 6px;
+  margin-bottom: $sp-sm;
+}
+
+.fuel-toggle {
+  font-family: $font-ui-sans;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border: 2px solid;
+  border-radius: $radius;
+  cursor: pointer;
+  background: transparent;
+  @include transition(all, 100ms);
+
+  &:hover { opacity: 0.8; }
+
+  &.off {
+    opacity: 0.3;
+  }
+
+  &--smooth {
+    margin-left: auto; // push to right side
+    border-style: dashed;
+
+    &:not(.off) {
+      opacity: 1;
+      border-style: solid;
+      background: rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+
+// ---- Range preset buttons ----
+.fuel-range-btns {
+  display: flex;
+  gap: 2px;
+  margin-bottom: $sp-sm;
+  justify-content: flex-end;
+}
+
+.fuel-range-btn {
+  font-family: $font-ui-sans;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: $sp-xs $sp-sm;
+  border: 1px solid $color-border;
+  background: $color-body-bg;
+  color: $color-text-muted;
+  cursor: pointer;
+  border-radius: 0;
+  @include transition(all, 100ms);
+
+  &:first-child { border-radius: $radius 0 0 $radius; }
+  &:last-child  { border-radius: 0 $radius $radius 0; }
+
+  &:hover {
+    background: $color-subtle-bg;
+    color: $color-text;
+  }
+
+  &.active {
+    background: $color-accent;
+    color: #fff;
+    border-color: $color-accent;
+  }
+}
+
+// ---- Chart skeleton loading ----
+.fuel-chart-skeleton {
+  width: 100%;
+  height: 280px;
+  background: $color-subtle-bg;
+  border-radius: $radius;
+  animation: fuel-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fuel-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+// ---- Chart error state ----
+.fuel-chart-error {
+  width: 100%;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-subtle-bg;
+  border-radius: $radius;
+  color: $color-text-muted;
+  font-size: 0.875rem;
+}
+
+// ---- Chart note / caption ----
+.fuel-chart-note {
+  font-size: 0.75rem;
+  color: $color-text-muted;
+  margin-top: $sp-sm;
+  font-style: italic;
+}
+
+// ---- Custom uPlot tooltip ----
+.fuel-tooltip {
+  position: absolute;
+  pointer-events: none;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+  padding: $sp-sm $sp-md;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.fuel-tooltip-date {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.fuel-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: $sp-xs;
+}
+
+.fuel-tooltip-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+// ---- Analysis section copy ----
+.fuel-analysis-intro {
+  max-width: $max-chart-width;
+  margin-bottom: $sp-xl;
+
+  p {
+    margin-bottom: $sp-md;
+    line-height: 1.7;
+  }
+}
+
+// ---- Cumulative spread annotation ----
+.fuel-spread-label {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: $sp-xs $sp-sm;
+  border-radius: $radius;
+  margin-bottom: $sp-md;
+
+  &--positive {
+    background: rgba(231, 111, 81, 0.12);
+    color: #c1121f;
+  }
+
+  &--negative {
+    background: rgba(42, 157, 143, 0.12);
+    color: #2a9d8f;
+  }
+}
+
+// ---- Open data section ----
+.fuel-downloads {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 $sp-xl;
+}
+
+.fuel-download-item {
+  margin-bottom: $sp-sm;
+}
+
+.fuel-download-link {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-sm;
+  font-weight: 500;
+  color: $color-accent;
+  text-decoration: none;
+  padding: $sp-sm $sp-md;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  @include transition(all, 100ms);
+
+  &:hover {
+    background: $color-subtle-bg;
+    border-color: $color-accent;
+  }
+}
+
+.fuel-methodology {
+  font-size: 0.8rem;
+  color: $color-text-muted;
+  line-height: 1.7;
+  border-top: 1px solid $color-border;
+  padding-top: $sp-lg;
+
+  p { margin-bottom: $sp-sm; }
+}
+
+// ---- Responsive: mobile ----
+@include respond-to($bp-sm) {
+  .fuel-hero-price {
+    font-size: 2.25rem;
+  }
+
+  .fuel-hero-card {
+    padding: $sp-lg $sp-md;
+  }
+
+  .fuel-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .fuel-card-price {
+    font-size: 1.25rem;
+  }
+
+  .fuel-chart-skeleton,
+  .fuel-chart-error {
+    height: 220px;
+  }
+}
