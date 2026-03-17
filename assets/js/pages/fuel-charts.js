@@ -29,7 +29,8 @@ function clamp(arr, limit) {
   return arr.map((v) => v == null ? null : Math.max(-limit, Math.min(limit, v)));
 }
 
-const DATA_URL = "/assets/data/fuel-chart.json";
+const DATA_URL = "https://polasreport-data.s3.us-west-1.amazonaws.com/fuel-chart.json";
+const DATA_FALLBACK = "/assets/data/fuel-chart.json";
 
 // ---- Helpers ----
 
@@ -601,7 +602,7 @@ function renderAnalysisCharts(data) {
 
 async function main() {
   try {
-    const data = await fetchJSON(DATA_URL);
+    const data = await fetchJSON(DATA_URL, DATA_FALLBACK);
     renderPriceCards(data);
     renderHistoryCharts(data);
     renderAnalysisCharts(data);

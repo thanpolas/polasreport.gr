@@ -2,13 +2,14 @@
 
 /**
  * Extract daily fuel prices from fuelprices.gr PDF bulletins into a CSV.
+ * Scans _fuel-pdfs/pdfs/ for all PDFs. For daily single-PDF updates, use fetch_today_pdf.mjs.
  * Requires `pdftotext` (poppler) installed on the system.
  */
 
-import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { extractPricesFromPDF } from "./lib/parse-fuel-pdf.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PDFS_DIR = join(__dirname, "..", "_fuel-pdfs", "pdfs");
@@ -21,41 +22,6 @@ function parseDateFromFilename(filename) {
   if (!match) return null;
   const [, day, month, year] = match;
   return `${year}-${month}-${day.padStart(2, "0")}`;
-}
-
-function extractPrices(pdfPath) {
-  let text;
-  try {
-    text = execFileSync("pdftotext", ["-layout", pdfPath, "-"], {
-      encoding: "utf-8",
-    });
-  } catch {
-    return null;
-  }
-
-  const prices = {};
-
-  for (const line of text.split("\n")) {
-    const priceMatch = line.trim().match(/(\d+,\d{3})\s*$/);
-    if (!priceMatch) continue;
-    const price = priceMatch[1].replace(",", ".");
-
-    if (line.includes("95") && !prices.unleaded_95) {
-      prices.unleaded_95 = price;
-    } else if (line.includes("100") && !prices.unleaded_100) {
-      prices.unleaded_100 = price;
-    } else if (/autogas/i.test(line)) {
-      prices.autogas = price;
-    } else if (line.includes("Diesel")) {
-      if (!prices.diesel) {
-        prices.diesel = price;
-      } else {
-        prices.heating_diesel = price;
-      }
-    }
-  }
-
-  return Object.keys(prices).length > 0 ? prices : null;
 }
 
 function loadExistingFiles() {
@@ -93,7 +59,7 @@ function main() {
       continue;
     }
 
-    const prices = extractPrices(join(PDFS_DIR, filename));
+    const prices = extractPricesFromPDF(join(PDFS_DIR, filename));
     if (!prices) {
       console.error(`  FAIL (no prices found): ${filename}`);
       failCount++;
