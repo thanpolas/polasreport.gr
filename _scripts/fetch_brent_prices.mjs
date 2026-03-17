@@ -38,7 +38,13 @@ function loadExisting() {
 
 async function fetchFromFRED(startDate, endDate) {
   const url = `${FRED_URL}?id=DCOILBRENTEU&cosd=${startDate}&coed=${endDate}`;
-  const resp = await fetch(url);
+  let resp;
+  try {
+    resp = await fetch(url, { signal: AbortSignal.timeout(15000) });
+  } catch (err) {
+    console.warn(`FRED fetch failed (${err.cause?.code || err.message}), skipping.`);
+    return [];
+  }
   if (!resp.ok) {
     console.warn(`FRED returned ${resp.status}, skipping.`);
     return [];
