@@ -25,6 +25,9 @@ jobs:
       - name: Fetch Brent prices
         run: node _scripts/fetch_brent_prices.mjs
 
+      - name: Fetch EUR/USD exchange rates
+        run: node _scripts/fetch_eurusd_prices.mjs
+
       - name: Generate JSON + CSVs
         run: node _scripts/generate_fuel_json.mjs
 
@@ -40,6 +43,10 @@ jobs:
           aws s3 cp assets/data/fuel_prices.csv s3://polasreport-data/fuel_prices.csv \
             --content-type "text/csv; charset=utf-8"
           aws s3 cp assets/data/brent_prices.csv s3://polasreport-data/brent_prices.csv \
+            --content-type "text/csv; charset=utf-8"
+          aws s3 cp assets/data/eurusd_prices.csv s3://polasreport-data/eurusd_prices.csv \
+            --content-type "text/csv; charset=utf-8"
+          aws s3 cp assets/data/brent_eur_prices.csv s3://polasreport-data/brent_eur_prices.csv \
             --content-type "text/csv; charset=utf-8"
 
 

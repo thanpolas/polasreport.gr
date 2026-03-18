@@ -27,21 +27,21 @@ permalink: /fuel/
 
   <div class="fuel-charts-row">
     <div class="fuel-chart-wrap">
-      <div class="fuel-chart-title">Αμόλυβδη 95 (EUR/λίτρο)</div>
+      <div class="fuel-chart-title" id="fuel-chart-title">Αμόλυβδη 95 (EUR/λίτρο)</div>
       <div class="fuel-chart-container" id="chart-unleaded95">
         <div class="fuel-chart-skeleton"></div>
       </div>
     </div>
 
     <div class="fuel-chart-wrap">
-      <div class="fuel-chart-title">Brent Crude (USD/βαρέλι)</div>
+      <div class="fuel-chart-title" id="brent-chart-title">Brent Crude (USD/βαρέλι)</div>
       <div class="fuel-chart-container" id="chart-brent">
         <div class="fuel-chart-skeleton"></div>
       </div>
     </div>
   </div>
 
-  <p class="fuel-chart-note">Σημείωση: Οι τιμές καυσίμων είναι σε EUR/λίτρο (μέσος εθνικός όρος). Το Brent crude σε USD/βαρέλι. Η σύγκριση γίνεται μέσω ημερήσιων ποσοστιαίων μεταβολών (%).</p>
+  <p class="fuel-chart-note">* Το Brent εμφανίζεται προσαρμοσμένο σε ευρώ (μέσω ημερήσιας ισοτιμίας EUR/USD), ώστε η σύγκριση με την τιμή αντλίας να γίνεται στην ίδια νομισματική βάση.</p>
 </section>
 
 <!-- SECTION 3: Daily Comparison -->
@@ -57,6 +57,7 @@ permalink: /fuel/
     <div class="fuel-chart-container" id="chart-daily-pct">
       <div class="fuel-chart-skeleton"></div>
     </div>
+    <p class="fuel-chart-note fuel-lag-hint">Δοκιμάστε καθυστέρηση λίγων ημερών για να δείτε αν η αντλία ακολουθεί αργότερα το Brent.</p>
   </div>
 </section>
 
@@ -97,6 +98,12 @@ permalink: /fuel/
       </a>
     </li>
     <li class="fuel-download-item">
+      <a class="fuel-download-link" href="https://polasreport-data.s3.us-west-1.amazonaws.com/eurusd_prices.csv" download>
+        <i class="bx bx-download" aria-hidden="true"></i>
+        Ισοτιμία EUR/USD (CSV)
+      </a>
+    </li>
+    <li class="fuel-download-item">
       <a class="fuel-download-link" href="https://polasreport-data.s3.us-west-1.amazonaws.com/fuel-chart.json" download>
         <i class="bx bx-download" aria-hidden="true"></i>
         Ενοποιημένα δεδομένα ανάλυσης (JSON)
@@ -105,7 +112,19 @@ permalink: /fuel/
   </ul>
 
   <div class="fuel-methodology">
-    <p><strong>Πηγές δεδομένων:</strong> Τιμές καυσίμων από <a href="https://www.fuelprices.gr/deltia_d.view" target="_blank" rel="noopener">fuelprices.gr</a> (Υπουργείο Ανάπτυξης). Τιμές Brent crude από <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">FRED</a> (Federal Reserve Bank of St. Louis).</p>
+    <p><strong>Τι δείχνουν τα γραφήματα:</strong> Το Brent είναι δείκτης τιμής αργού πετρελαίου, όχι η τελική τιμή του καυσίμου στην αντλία. Η αντλία επηρεάζεται με καθυστέρηση και από διαφορετικά στάδια της αλυσίδας αγοράς. Τα γραφήματα βοηθούν στη σύγκριση της πορείας των τιμών, όχι στην απόδοση αιτίας από μόνα τους.</p>
+
+    <details class="fuel-methodology-details">
+      <summary>Περισσότερα για τη μεθοδολογία</summary>
+      <ul>
+        <li>Το Brent crude αποτελεί διεθνές σημείο αναφοράς για το αργό πετρέλαιο. Δεν αντιστοιχεί στο τελικό προϊόν που πωλείται στην αντλία.</li>
+        <li>Οι τιμές αντλίας δεν αντιδρούν άμεσα στις μεταβολές του αργού. Η καθυστέρηση εξαρτάται από αποθέματα, συμβόλαια προμήθειας και εμπορικές αποφάσεις.</li>
+        <li>Τα futures του Brent και οι λιανικές τιμές ανήκουν σε διαφορετικά στάδια της εφοδιαστικής αλυσίδας.</li>
+        <li>Η προσαρμογή σε ευρώ (EUR/USD) βελτιώνει τη συγκρισιμότητα, αλλά δεν εξαλείφει όλες τις δομικές διαφορές μεταξύ αργού και λιανικής τιμής.</li>
+      </ul>
+    </details>
+
+    <p><strong>Πηγές δεδομένων:</strong> Τιμές καυσίμων από <a href="https://www.fuelprices.gr/deltia_d.view" target="_blank" rel="noopener">fuelprices.gr</a> (Υπουργείο Ανάπτυξης). Τιμές Brent crude από <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">FRED</a> (Federal Reserve Bank of St. Louis). Ισοτιμία EUR/USD από <a href="https://fred.stlouisfed.org/series/DEXUSEU" target="_blank" rel="noopener">FRED</a> (σειρά DEXUSEU).</p>
     <p><strong>Συχνότητα ενημέρωσης:</strong> Καθημερινά. Οι τιμές καυσίμων αντιπροσωπεύουν τον σταθμισμένο εθνικό μέσο όρο. Η τιμή Brent είναι η τιμή κλεισίματος των futures.</p>
     <p><strong>Άδεια:</strong> <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, ελεύθερη χρήση με αναφορά.</p>
   </div>

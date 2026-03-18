@@ -3,7 +3,11 @@
     "allow": [
       "WebFetch(domain:www.cmegroup.com)",
       "Bash(node /Users/thanpolas/Projects/polasreport.gr/_scripts/generate_fuel_json.mjs)",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "WebFetch(domain:fred.stlouisfed.org)",
+      "WebFetch(domain:data.ecb.europa.eu)",
+      "WebFetch(domain:frankfurter.dev)",
+      "Bash(node _scripts/fetch_eurusd_prices.mjs)"
     ]
   }
 }

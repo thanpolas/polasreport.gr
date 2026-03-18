@@ -5,9 +5,10 @@
   "scripts": {
     "fuel:extract": "node _scripts/extract_fuel_prices.mjs",
     "fuel:brent": "node _scripts/fetch_brent_prices.mjs",
+    "fuel:eurusd": "node _scripts/fetch_eurusd_prices.mjs",
     "fuel:json": "node _scripts/generate_fuel_json.mjs",
     "fuel:today": "node _scripts/fetch_today_pdf.mjs",
-    "fuel:daily": "npm run fuel:today && npm run fuel:brent && npm run fuel:json",
-    "fuel:update": "npm run fuel:brent && npm run fuel:extract && npm run fuel:json"
+    "fuel:daily": "npm run fuel:today && npm run fuel:brent && npm run fuel:eurusd && npm run fuel:json",
+    "fuel:update": "npm run fuel:brent && npm run fuel:eurusd && npm run fuel:extract && npm run fuel:json"
   }
 }

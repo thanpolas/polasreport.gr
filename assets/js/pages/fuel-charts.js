@@ -29,6 +29,21 @@ function clamp(arr, limit) {
   return arr.map((v) => v == null ? null : Math.max(-limit, Math.min(limit, v)));
 }
 
+/** Compute daily % change array from a price series. */
+function pctChangeSeries(arr) {
+  return arr.map((v, i) => {
+    if (i === 0 || v == null || arr[i - 1] == null || arr[i - 1] === 0) return null;
+    return Math.round(((v - arr[i - 1]) / arr[i - 1]) * 100 * 1000) / 1000;
+  });
+}
+
+const FUEL_TYPES = {
+  unleaded_95:  { key: "unleaded_95",  label: "95",     fullLabel: "Αμόλυβδη 95",  chartLabel: "Αμόλυβδη 95 (EUR/λίτρο)" },
+  diesel:       { key: "diesel",       label: "Diesel",  fullLabel: "Diesel Κίνησης", chartLabel: "Diesel (EUR/λίτρο)" },
+  unleaded_100: { key: "unleaded_100", label: "100",    fullLabel: "Αμόλυβδη 100", chartLabel: "Αμόλυβδη 100 (EUR/λίτρο)" },
+  autogas:      { key: "autogas",      label: "LPG",    fullLabel: "Autogas (LPG)", chartLabel: "Autogas (EUR/λίτρο)" },
+};
+
 const DATA_URL = "https://polasreport-data.s3.us-west-1.amazonaws.com/fuel-chart.json";
 const DATA_FALLBACK = "/assets/data/fuel-chart.json";
 
@@ -147,81 +162,311 @@ function mountChart(containerId, opts, data, defaultRange) {
   return chart;
 }
 
+// ---- FX mode state (EUR-adjusted vs raw USD) ----
+
+/** Global FX mode: "eur" (default) or "usd". Listeners are notified on change. */
+const fxState = {
+  mode: "eur",
+  listeners: [],
+  set(mode) {
+    this.mode = mode;
+    this.listeners.forEach((fn) => fn(mode));
+  },
+  on(fn) { this.listeners.push(fn); },
+};
+
+/** Global fuel selection. Listeners are notified on change. */
+const fuelState = {
+  key: "unleaded_95",
+  listeners: [],
+  set(key) {
+    this.key = key;
+    this.listeners.forEach((fn) => fn(key));
+  },
+  on(fn) { this.listeners.push(fn); },
+};
+
 // ---- Section 2: Price History Charts ----
 
 function renderHistoryCharts(data) {
-  const { timestamps, unleaded_95, brent } = data.series;
+  const { timestamps, brent, brent_eur } = data.series;
+  const hasFx = brent_eur && brent_eur.some((v) => v != null);
 
-  // Chart A: Unleaded 95
-  const optsU95 = {
-    ...baseOpts(null),
-    series: [
-      {},
-      {
-        label: "Αμόλυβδη 95",
-        stroke: COLORS.unleaded95,
-        width: 1.5,
-        fill: COLORS.unleaded95 + "14",
-      },
-    ],
-    axes: [
-      baseOpts(null).axes[0],
-      {
-        ...baseOpts(null).axes[1],
-        values: (u, vals) => vals.map((v) => v != null ? fmtEUR(v) : ""),
-      },
-    ],
-    plugins: [
-      tooltipPlugin([(v) => `€${fmtEUR(v)}`], [COLORS.unleaded95]),
-    ],
-  };
+  // Chart A: Fuel price history — responds to fuel selector
+  const fuelTitleEl = document.getElementById("fuel-chart-title");
 
-  mountChart("chart-unleaded95", optsU95, [timestamps, unleaded_95], "1Y");
+  function fuelChartOpts(fuelKey) {
+    const ft = FUEL_TYPES[fuelKey];
+    return {
+      ...baseOpts(null),
+      series: [
+        {},
+        {
+          label: ft.fullLabel,
+          stroke: COLORS.unleaded95,
+          width: 1.5,
+          fill: COLORS.unleaded95 + "14",
+        },
+      ],
+      axes: [
+        baseOpts(null).axes[0],
+        {
+          ...baseOpts(null).axes[1],
+          values: (u, vals) => vals.map((v) => v != null ? fmtEUR(v) : ""),
+        },
+      ],
+      plugins: [
+        tooltipPlugin([(v) => `€${fmtEUR(v)}`], [COLORS.unleaded95]),
+      ],
+    };
+  }
 
-  // Chart B: Brent
-  const optsBrent = {
-    ...baseOpts(null),
-    series: [
-      {},
-      {
-        label: "Brent Crude",
-        stroke: COLORS.brent,
-        width: 1.5,
-        fill: COLORS.brent + "14",
-      },
-    ],
-    axes: [
-      baseOpts(null).axes[0],
-      {
-        ...baseOpts(null).axes[1],
-        values: (u, vals) => vals.map((v) => v != null ? `$${v.toFixed(0)}` : ""),
-      },
-    ],
-    plugins: [
-      tooltipPlugin([(v) => fmtUSD(v)], [COLORS.brent]),
-    ],
-  };
+  let fuelChart = mountChart(
+    "chart-unleaded95",
+    fuelChartOpts("unleaded_95"),
+    [timestamps, data.series.unleaded_95],
+    "1Y",
+  );
 
-  mountChart("chart-brent", optsBrent, [timestamps, brent], "1Y");
+  // Fuel selector pills
+  const fuelContainer = document.getElementById("chart-unleaded95");
+  if (fuelContainer) {
+    const fuelBtns = {};
+    const rangeBtns = fuelContainer.querySelector(".fuel-range-btns");
+
+    // Check which fuels have enough data
+    for (const [key, ft] of Object.entries(FUEL_TYPES)) {
+      const series = data.series[key];
+      const hasData = series && series.filter((v) => v != null).length > 30;
+
+      const btn = document.createElement("button");
+      btn.className = "fuel-range-btn" + (key === "unleaded_95" ? " active" : "");
+      btn.textContent = ft.label;
+      if (!hasData) {
+        btn.disabled = true;
+        btn.style.opacity = "0.3";
+        btn.style.cursor = "default";
+      } else {
+        btn.addEventListener("click", () => fuelState.set(key));
+      }
+      fuelBtns[key] = btn;
+    }
+
+    // Insert fuel pills into range buttons row with separator
+    if (rangeBtns) {
+      const sep = document.createElement("span");
+      sep.className = "fuel-range-sep";
+      const keys = Object.keys(FUEL_TYPES);
+      for (let i = keys.length - 1; i >= 0; i--) {
+        rangeBtns.prepend(fuelBtns[keys[i]]);
+      }
+      rangeBtns.insertBefore(sep, fuelBtns[keys[keys.length - 1]].nextSibling);
+    }
+
+    fuelState.on((key) => {
+      Object.entries(fuelBtns).forEach(([k, b]) => b.classList.toggle("active", k === key));
+
+      const ft = FUEL_TYPES[key];
+      if (fuelTitleEl) fuelTitleEl.textContent = ft.chartLabel;
+
+      // Rebuild fuel chart
+      fuelContainer.querySelector(".uplot")?.remove();
+      fuelContainer.querySelector(".fuel-range-btns")?.remove();
+
+      fuelChart = mountChart(
+        "chart-unleaded95",
+        fuelChartOpts(key),
+        [timestamps, data.series[key]],
+        "1Y",
+      );
+
+      // Re-inject fuel pills into new range buttons row
+      const newRangeBtns = fuelContainer.querySelector(".fuel-range-btns");
+      if (newRangeBtns) {
+        const sep = document.createElement("span");
+        sep.className = "fuel-range-sep";
+        const keys = Object.keys(FUEL_TYPES);
+        for (let i = keys.length - 1; i >= 0; i--) {
+          newRangeBtns.prepend(fuelBtns[keys[i]]);
+        }
+        newRangeBtns.insertBefore(sep, fuelBtns[keys[keys.length - 1]].nextSibling);
+      }
+    });
+  }
+
+  // Chart B: Brent — defaults to EUR-adjusted when available
+  const brentTitleEl = document.getElementById("brent-chart-title");
+
+  function brentChartOpts(isEur) {
+    return {
+      ...baseOpts(null),
+      series: [
+        {},
+        {
+          label: isEur ? "Brent Crude (EUR)" : "Brent Crude (USD)",
+          stroke: COLORS.brent,
+          width: 1.5,
+          fill: COLORS.brent + "14",
+        },
+      ],
+      axes: [
+        baseOpts(null).axes[0],
+        {
+          ...baseOpts(null).axes[1],
+          values: (u, vals) => vals.map((v) =>
+            v != null ? (isEur ? `€${v.toFixed(0)}` : `$${v.toFixed(0)}`) : "",
+          ),
+        },
+      ],
+      plugins: [
+        tooltipPlugin([(v) => isEur ? `€${v.toFixed(2)}` : fmtUSD(v)], [COLORS.brent]),
+      ],
+    };
+  }
+
+  const defaultEur = hasFx;
+  let brentChart = mountChart(
+    "chart-brent",
+    brentChartOpts(defaultEur),
+    [timestamps, defaultEur ? brent_eur : brent],
+    "1Y",
+  );
+
+  if (brentTitleEl) {
+    brentTitleEl.innerHTML = defaultEur
+      ? "Brent Crude (EUR/βαρέλι) <span class='fuel-chart-title-note'>*</span>"
+      : "Brent Crude (USD/βαρέλι)";
+  }
+
+  // FX toggle — only if EUR data exists
+  if (hasFx) {
+    const container = document.getElementById("chart-brent");
+
+    const btnEur = document.createElement("button");
+    btnEur.className = "fuel-range-btn active";
+    btnEur.textContent = "EUR";
+    btnEur.addEventListener("click", () => fxState.set("eur"));
+
+    const btnUsd = document.createElement("button");
+    btnUsd.className = "fuel-range-btn";
+    btnUsd.textContent = "USD";
+    btnUsd.addEventListener("click", () => fxState.set("usd"));
+
+    function setFxButtons(mode) {
+      btnEur.classList.toggle("active", mode === "eur");
+      btnUsd.classList.toggle("active", mode === "usd");
+    }
+
+    // Insert into the existing range buttons row
+    const rangeBtns = container.querySelector(".fuel-range-btns");
+    if (rangeBtns) {
+      const sep = document.createElement("span");
+      sep.className = "fuel-range-sep";
+      rangeBtns.prepend(btnUsd);
+      rangeBtns.prepend(btnEur);
+      rangeBtns.insertBefore(sep, btnUsd.nextSibling);
+    }
+
+    fxState.on((mode) => {
+      setFxButtons(mode);
+      const isEur = mode === "eur";
+      const seriesData = isEur ? brent_eur : brent;
+
+      // Remove only the uPlot instance and range buttons
+      container.querySelector(".uplot")?.remove();
+      container.querySelector(".fuel-range-btns")?.remove();
+
+      const opts = brentChartOpts(isEur);
+      const { width, height } = responsiveSize(container);
+      opts.width = width;
+      opts.height = height;
+
+      brentChart = new uPlot(opts, [timestamps, seriesData], container);
+
+      const ro = new ResizeObserver(() => {
+        brentChart.setSize(responsiveSize(container));
+      });
+      ro.observe(container);
+
+      createRangeButtons(container, brentChart, timestamps, "1Y");
+
+      // Re-inject FX buttons into the new range row
+      const newRangeBtns = container.querySelector(".fuel-range-btns");
+      if (newRangeBtns) {
+        const sep = document.createElement("span");
+        sep.className = "fuel-range-sep";
+        newRangeBtns.prepend(btnUsd);
+        newRangeBtns.prepend(btnEur);
+        newRangeBtns.insertBefore(sep, btnUsd.nextSibling);
+      }
+
+      brentChart.over.addEventListener("dblclick", () => {
+        brentChart.setScale("x", {
+          min: timestamps[0],
+          max: timestamps[timestamps.length - 1],
+        });
+      });
+
+      if (brentTitleEl) {
+        brentTitleEl.innerHTML = isEur
+          ? "Brent Crude (EUR/βαρέλι) <span class='fuel-chart-title-note'>*</span>"
+          : "Brent Crude (USD/βαρέλι)";
+      }
+    });
+  }
 }
 
 // ---- Section 3: Analysis Charts ----
 
 function renderAnalysisCharts(data) {
-  const { timestamps, cumulative_spread, pct_unleaded_95, pct_brent } = data.series;
+  const { timestamps, cumulative_spread, pct_unleaded_95, pct_brent, pct_brent_eur } = data.series;
+  const hasFx = pct_brent_eur && pct_brent_eur.some((v) => v != null);
+
+  // Precompute % change series for all fuels
+  const fuelPctCache = {};
+  fuelPctCache.unleaded_95 = pct_unleaded_95; // already in JSON
+  for (const key of Object.keys(FUEL_TYPES)) {
+    if (key !== "unleaded_95") {
+      fuelPctCache[key] = pctChangeSeries(data.series[key] || []);
+    }
+  }
+
+  function activeFuelPct() {
+    return fuelPctCache[fuelState.key] || pct_unleaded_95;
+  }
+
+  // Pick the active Brent % series based on FX mode
+  function activeBrentPct() {
+    return (hasFx && fxState.mode === "eur") ? pct_brent_eur : pct_brent;
+  }
 
   // Chart C: Cumulative spread — recomputed per range, reset to 0 at range start
   const SPREAD_CLAMP = 10;
-  const clampedFuelPct = clamp(pct_unleaded_95, SPREAD_CLAMP);
-  const clampedBrentPct = clamp(pct_brent, SPREAD_CLAMP);
+  let clampedFuelPct = clamp(activeFuelPct(), SPREAD_CLAMP);
+
+  function buildClampedBrentPct() {
+    return clamp(activeBrentPct(), SPREAD_CLAMP);
+  }
+
+  let clampedBrentPct = buildClampedBrentPct();
 
   // Compute daily diff (fuel pct - brent pct), light 3-day smoothing
-  const rawDiff = clampedFuelPct.map((f, i) => {
-    const b = clampedBrentPct[i];
-    if (f == null || b == null) return null;
-    return Math.round((f - b) * 1000) / 1000;
-  });
-  const dailyDiff = sma(rawDiff, 3); // light smoothing reduces harsh edges
+  function buildClampedFuelPct() {
+    return clamp(activeFuelPct(), SPREAD_CLAMP);
+  }
+
+  function buildRawDiff() {
+    const cfp = clampedFuelPct;
+    const cbp = buildClampedBrentPct();
+    return cfp.map((f, i) => {
+      const b = cbp[i];
+      if (f == null || b == null) return null;
+      return Math.round((f - b) * 1000) / 1000;
+    });
+  }
+
+  let rawDiff = buildRawDiff();
+  let dailyDiff = sma(rawDiff, 3);
 
   /** Build cumulative spread from startIdx, resetting to 0. */
   function buildCumulative(startIdx) {
@@ -426,7 +671,9 @@ function renderAnalysisCharts(data) {
   });
 
   // Range buttons with recompute on change
+  let lastRangeKey = "1Y";
   createRangeButtons(container, cumChart, timestamps, "1Y", (key, min, max) => {
+    lastRangeKey = key;
     let startIdx = 0;
     for (let i = 0; i < timestamps.length; i++) {
       if (timestamps[i] >= min) { startIdx = i; break; }
@@ -438,14 +685,61 @@ function renderAnalysisCharts(data) {
     updateAnnotation(currentCumulative, currentRangeLabel);
   });
 
+  // Respond to FX toggle — recompute diffs and cumulative
+  fxState.on(() => recomputeCumulative());
+
+  // Helper to recompute cumulative from current range
+  function recomputeCumulative() {
+    clampedFuelPct = buildClampedFuelPct();
+    clampedBrentPct = buildClampedBrentPct();
+    rawDiff = buildRawDiff();
+    dailyDiff = sma(rawDiff, 3);
+
+    const ranges = { "1M": 30, "3M": 90, "6M": 180, "1Y": 365, "All": Infinity };
+    const days = ranges[lastRangeKey] || Infinity;
+    const max = timestamps[timestamps.length - 1];
+    const min = days === Infinity ? timestamps[0] : max - days * 86400;
+    let startIdx = 0;
+    for (let i = 0; i < timestamps.length; i++) {
+      if (timestamps[i] >= min) { startIdx = i; break; }
+    }
+    currentCumulative = buildCumulative(startIdx);
+    cumChart.setData([timestamps, currentCumulative], false);
+    updateAnnotation(currentCumulative, currentRangeLabel);
+  }
+
+  // Respond to fuel selection — recompute cumulative spread
+  fuelState.on(() => recomputeCumulative());
+
   // Chart D: Daily % change overlay — dual Y-axes, smoothing, outlier clamping
   const SMA_WINDOW = 5;
   const CLAMP_LIMIT = 8; // cap extreme spikes at ±8%
+  const LAG_OPTIONS = [0, 3, 5, 7, 10];
+  let currentLag = 0;
 
-  const rawFuel = clamp(pct_unleaded_95, CLAMP_LIMIT);
-  const rawCrude = clamp(pct_brent, CLAMP_LIMIT);
-  const smoothFuel = sma(rawFuel, SMA_WINDOW);
-  const smoothCrude = sma(rawCrude, SMA_WINDOW);
+  /** Shift array forward by N positions (prepend nulls, trim end). */
+  function shiftForward(arr, n) {
+    if (n === 0) return arr;
+    const out = new Array(arr.length).fill(null);
+    for (let i = n; i < arr.length; i++) {
+      out[i] = arr[i - n];
+    }
+    return out;
+  }
+
+  function buildFuelData() {
+    const raw = clamp(activeFuelPct(), CLAMP_LIMIT);
+    return { raw, smooth: sma(raw, SMA_WINDOW) };
+  }
+
+  function buildCrudeData() {
+    const base = clamp(activeBrentPct(), CLAMP_LIMIT);
+    const shifted = shiftForward(base, currentLag);
+    return { raw: shifted, smooth: sma(shifted, SMA_WINDOW) };
+  }
+
+  let fuelData = buildFuelData();
+  let crudeData = buildCrudeData();
 
   // Start with smoothed data
   let isSmoothed = true;
@@ -521,7 +815,7 @@ function renderAnalysisCharts(data) {
       if (fuelVal != null) {
         html += `<div class="fuel-tooltip-row">
           <span class="fuel-tooltip-swatch" style="background:${COLORS.unleaded95}"></span>
-          Αμόλυβδη 95: <strong>${fmtPct(fuelVal)}</strong>
+          ${FUEL_TYPES[fuelState.key].fullLabel}: <strong>${fmtPct(fuelVal)}</strong>
         </div>`;
       }
       if (brentVal != null) {
@@ -559,7 +853,7 @@ function renderAnalysisCharts(data) {
   const pctChart = mountChart(
     "chart-daily-pct",
     pctOpts,
-    [timestamps, smoothFuel, smoothCrude],
+    [timestamps, fuelData.smooth, crudeData.smooth],
     "1M",
   );
 
@@ -585,9 +879,33 @@ function renderAnalysisCharts(data) {
       smoothBtn.classList.toggle("off", isSmoothed);
       pctChart.setData([
         timestamps,
-        isSmoothed ? smoothFuel : rawFuel,
-        isSmoothed ? smoothCrude : rawCrude,
+        isSmoothed ? fuelData.smooth : fuelData.raw,
+        isSmoothed ? crudeData.smooth : crudeData.raw,
       ]);
+    });
+
+    // Respond to FX toggle
+    fxState.on(() => {
+      crudeData = buildCrudeData();
+      pctChart.setData([
+        timestamps,
+        isSmoothed ? fuelData.smooth : fuelData.raw,
+        isSmoothed ? crudeData.smooth : crudeData.raw,
+      ]);
+    });
+
+    // Respond to fuel selection
+    fuelState.on(() => {
+      fuelData = buildFuelData();
+      crudeData = buildCrudeData();
+      const xMin = pctChart.scales.x.min;
+      const xMax = pctChart.scales.x.max;
+      pctChart.setData([
+        timestamps,
+        isSmoothed ? fuelData.smooth : fuelData.raw,
+        isSmoothed ? crudeData.smooth : crudeData.raw,
+      ], false);
+      pctChart.setScale("x", { min: xMin, max: xMax });
     });
 
     // Append to the toggles row
@@ -595,6 +913,42 @@ function renderAnalysisCharts(data) {
     if (togglesRow) {
       togglesRow.appendChild(smoothBtn);
     }
+
+    // Lag control — compact pill row
+    const lagWrap = document.createElement("div");
+    lagWrap.className = "fuel-lag-control";
+
+    const lagLabel = document.createElement("span");
+    lagLabel.className = "fuel-lag-label";
+    lagLabel.textContent = "Καθυστέρηση:";
+    lagWrap.appendChild(lagLabel);
+
+    const lagBtns = {};
+    for (const lag of LAG_OPTIONS) {
+      const btn = document.createElement("button");
+      btn.className = "fuel-lag-btn" + (lag === 0 ? " active" : "");
+      btn.textContent = lag === 0 ? "0" : `${lag}η`;
+      btn.addEventListener("click", () => {
+        currentLag = lag;
+        Object.values(lagBtns).forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        crudeData = buildCrudeData();
+
+        // Preserve current x-axis range
+        const xMin = pctChart.scales.x.min;
+        const xMax = pctChart.scales.x.max;
+        pctChart.setData([
+          timestamps,
+          isSmoothed ? fuelData.smooth : fuelData.raw,
+          isSmoothed ? crudeData.smooth : crudeData.raw,
+        ], false);
+        pctChart.setScale("x", { min: xMin, max: xMax });
+      });
+      lagWrap.appendChild(btn);
+      lagBtns[lag] = btn;
+    }
+
+    container.appendChild(lagWrap);
   }
 }
 
