@@ -127,6 +127,12 @@
   margin-bottom: $sp-sm;
 }
 
+.fuel-chart-title-note {
+  font-weight: 400;
+  color: #888;
+  font-size: 0.85em;
+}
+
 .fuel-chart-container {
   position: relative;
   width: 100%;
@@ -178,6 +184,13 @@
   justify-content: flex-end;
 }
 
+.fuel-range-sep {
+  width: 1px;
+  align-self: stretch;
+  background: #ddd;
+  margin: 2px 4px;
+}
+
 .fuel-range-btn {
   font-family: $font-ui-sans;
   font-size: 0.7rem;
@@ -192,6 +205,48 @@
 
   &:first-child { border-radius: $radius 0 0 $radius; }
   &:last-child  { border-radius: 0 $radius $radius 0; }
+
+  &:hover {
+    background: $color-subtle-bg;
+    color: $color-text;
+  }
+
+  &.active {
+    background: $color-accent;
+    color: #fff;
+    border-color: $color-accent;
+  }
+}
+
+// ---- Lag control ----
+.fuel-lag-control {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: $sp-sm;
+}
+
+.fuel-lag-label {
+  font-family: $font-ui-sans;
+  font-size: 0.7rem;
+  color: $color-text-muted;
+  margin-right: $sp-xs;
+}
+
+.fuel-lag-btn {
+  font-family: $font-ui-sans;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border: 1px solid $color-border;
+  background: $color-body-bg;
+  color: $color-text-muted;
+  cursor: pointer;
+  border-radius: 0;
+  @include transition(all, 100ms);
+
+  &:first-of-type { border-radius: $radius 0 0 $radius; }
+  &:last-of-type  { border-radius: 0 $radius $radius 0; }
 
   &:hover {
     background: $color-subtle-bg;
@@ -341,6 +396,28 @@
   padding-top: $sp-lg;
 
   p { margin-bottom: $sp-sm; }
+}
+
+.fuel-methodology-details {
+  margin: $sp-sm 0 $sp-lg;
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: $color-text;
+
+    &:hover { color: $color-accent; }
+  }
+
+  ul {
+    margin-top: $sp-sm;
+    padding-left: 1.2em;
+    list-style: disc;
+  }
+
+  li {
+    margin-bottom: $sp-xs;
+  }
 }
 
 // ---- Responsive: mobile ----
