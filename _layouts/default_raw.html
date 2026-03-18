@@ -36,7 +36,7 @@
 
   {% if page.page_js %}
   <script src="https://cdn.jsdelivr.net/npm/uplot@1.6.31/dist/uPlot.iife.min.js"></script>
-  <script type="module" src="{{ '/assets/js/pages/' | append: page.page_js | append: '.js' | relative_url }}"></script>
+  <script type="module" src="{{ '/assets/js/pages/' | append: page.page_js | append: '.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   {% endif %}
 </body>
 </html>
