@@ -952,6 +952,227 @@ function renderAnalysisCharts(data) {
   }
 }
 
+// ---- Section 5: EU Comparison Chart ----
+
+const EU_COUNTRIES = {
+  GR: { label: "Ελλάδα", color: COLORS.unleaded95, width: 2.5 },
+  EU: { label: "Μ.Ο. ΕΕ", color: COLORS.diesel, width: 1.5 },
+  IT: { label: "Ιταλία", color: COLORS.unleaded100, width: 1 },
+  BG: { label: "Βουλγαρία", color: COLORS.autogas, width: 1 },
+  RO: { label: "Ρουμανία", color: COLORS.romania, width: 1 },
+};
+
+function renderEUComparison(data) {
+  const eu = data.eu_comparison;
+  if (!eu) return;
+
+  const container = document.getElementById("chart-eu-comparison");
+  if (!container) return;
+
+  const titleEl = document.getElementById("eu-chart-title");
+
+  // Map fuel state to EU fuel key
+  function euFuelKey() {
+    const key = fuelState.key;
+    if (key === "unleaded_95" || key === "unleaded_100") return "euro95";
+    if (key === "diesel") return "diesel";
+    return null;
+  }
+
+  // Track which countries are visible
+  const visible = { GR: true, EU: true, IT: true, BG: true, RO: false };
+
+  function buildChartData(fuelKey) {
+    if (!fuelKey) return null;
+
+    const seriesData = [eu.timestamps];
+    const seriesOpts = [{}];
+
+    for (const [cc, cfg] of Object.entries(EU_COUNTRIES)) {
+      const key = `${cc.toLowerCase()}_${fuelKey}`;
+      const arr = eu.series[key] || [];
+      // If hidden, pass nulls so uPlot keeps series indices stable
+      seriesData.push(visible[cc] ? arr : arr.map(() => null));
+      seriesOpts.push({
+        label: cfg.label,
+        stroke: visible[cc] ? cfg.color : "transparent",
+        width: cfg.width,
+        show: visible[cc],
+      });
+    }
+
+    return { seriesData, seriesOpts };
+  }
+
+  function buildTooltipPlugin() {
+    let tooltipEl;
+
+    function init(u) {
+      tooltipEl = document.createElement("div");
+      tooltipEl.className = "fuel-tooltip";
+      tooltipEl.style.display = "none";
+      u.over.appendChild(tooltipEl);
+    }
+
+    function setCursor(u) {
+      const { idx } = u.cursor;
+      if (idx == null) { tooltipEl.style.display = "none"; return; }
+
+      const ts = u.data[0][idx];
+      let html = `<div class="fuel-tooltip-date">${fmtDate(ts)}</div>`;
+
+      const countries = Object.entries(EU_COUNTRIES);
+      for (let s = 0; s < countries.length; s++) {
+        const [cc, cfg] = countries[s];
+        if (!visible[cc]) continue;
+        const val = u.data[s + 1]?.[idx];
+        if (val == null) continue;
+        html += `<div class="fuel-tooltip-row">
+          <span class="fuel-tooltip-swatch" style="background:${cfg.color}"></span>
+          ${cfg.label}: <strong>€${fmtEUR(val)}</strong>
+        </div>`;
+      }
+
+      tooltipEl.innerHTML = html;
+      tooltipEl.style.display = "block";
+
+      const { left, top } = u.cursor;
+      const overRect = u.over.getBoundingClientRect();
+      const ttRect = tooltipEl.getBoundingClientRect();
+      let x = left + 15;
+      let y = top - 10;
+      if (x + ttRect.width > overRect.width) x = left - ttRect.width - 15;
+      if (y + ttRect.height > overRect.height) y = overRect.height - ttRect.height - 5;
+      if (y < 0) y = 5;
+      tooltipEl.style.left = x + "px";
+      tooltipEl.style.top = y + "px";
+    }
+
+    return { hooks: { init: [init], setCursor: [setCursor] } };
+  }
+
+  function buildOpts(seriesOpts) {
+    return {
+      ...baseOpts(null),
+      series: seriesOpts,
+      axes: [
+        baseOpts(null).axes[0],
+        {
+          ...baseOpts(null).axes[1],
+          values: (u, vals) => vals.map((v) => v != null ? fmtEUR(v) : ""),
+        },
+      ],
+      plugins: [buildTooltipPlugin()],
+    };
+  }
+
+  let currentFuelKey = euFuelKey() || "euro95";
+  let chartResult = buildChartData(currentFuelKey);
+
+  if (!chartResult) return;
+
+  // Mount chart
+  let euChart = mountChart(
+    "chart-eu-comparison",
+    buildOpts(chartResult.seriesOpts),
+    chartResult.seriesData,
+    "1Y",
+  );
+
+  function updateTitle() {
+    if (!titleEl) return;
+    const fk = currentFuelKey;
+    titleEl.textContent = fk === "euro95"
+      ? "Αμόλυβδη 95 (EUR/λίτρο)"
+      : "Diesel (EUR/λίτρο)";
+  }
+  updateTitle();
+
+  // Country toggle pills
+  const toggleItems = Object.entries(EU_COUNTRIES).map(([cc, cfg]) => ({
+    label: cfg.label,
+    color: cfg.color,
+    cc,
+  }));
+
+  const toggleWrap = document.createElement("div");
+  toggleWrap.className = "fuel-toggles";
+
+  const countryBtns = {};
+  for (const { label, color, cc } of toggleItems) {
+    const btn = document.createElement("button");
+    btn.className = "fuel-toggle" + (visible[cc] ? "" : " off");
+    btn.textContent = label;
+    btn.style.borderColor = color;
+    btn.style.color = color;
+
+    if (cc === "GR") {
+      // Greece is always pinned
+      btn.style.cursor = "default";
+      btn.style.fontWeight = "700";
+    } else {
+      btn.addEventListener("click", () => {
+        visible[cc] = !visible[cc];
+        btn.classList.toggle("off", !visible[cc]);
+        rebuildChart();
+      });
+    }
+
+    toggleWrap.appendChild(btn);
+    countryBtns[cc] = btn;
+  }
+
+  container.prepend(toggleWrap);
+
+  function rebuildChart() {
+    chartResult = buildChartData(currentFuelKey);
+    if (!chartResult) return;
+
+    // Preserve range
+    const xMin = euChart?.scales?.x?.min;
+    const xMax = euChart?.scales?.x?.max;
+
+    container.querySelector(".uplot")?.remove();
+    container.querySelector(".fuel-range-btns")?.remove();
+
+    const opts = buildOpts(chartResult.seriesOpts);
+    const { width, height } = responsiveSize(container);
+    opts.width = width;
+    opts.height = height;
+
+    euChart = new uPlot(opts, chartResult.seriesData, container);
+
+    const ro = new ResizeObserver(() => {
+      euChart.setSize(responsiveSize(container));
+    });
+    ro.observe(container);
+
+    createRangeButtons(container, euChart, eu.timestamps, "1Y");
+
+    euChart.over.addEventListener("dblclick", () => {
+      euChart.setScale("x", {
+        min: eu.timestamps[0],
+        max: eu.timestamps[eu.timestamps.length - 1],
+      });
+    });
+
+    if (xMin != null && xMax != null) {
+      euChart.setScale("x", { min: xMin, max: xMax });
+    }
+
+    updateTitle();
+  }
+
+  // Respond to fuel selector
+  fuelState.on((key) => {
+    const fk = euFuelKey();
+    if (fk && fk !== currentFuelKey) {
+      currentFuelKey = fk;
+      rebuildChart();
+    }
+  });
+}
+
 // ---- Main ----
 
 async function main() {
@@ -960,6 +1181,7 @@ async function main() {
     renderPriceCards(data);
     renderHistoryCharts(data);
     renderAnalysisCharts(data);
+    renderEUComparison(data);
   } catch (err) {
     console.error("Failed to load fuel data:", err);
     document.querySelectorAll(".fuel-chart-skeleton").forEach((el) => {

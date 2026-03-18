@@ -7,7 +7,8 @@
       "WebFetch(domain:fred.stlouisfed.org)",
       "WebFetch(domain:data.ecb.europa.eu)",
       "WebFetch(domain:frankfurter.dev)",
-      "Bash(node _scripts/fetch_eurusd_prices.mjs)"
+      "Bash(node _scripts/fetch_eurusd_prices.mjs)",
+      "WebFetch(domain:energy.ec.europa.eu)"
     ]
   }
 }

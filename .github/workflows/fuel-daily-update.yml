@@ -28,6 +28,12 @@ jobs:
       - name: Fetch EUR/USD exchange rates
         run: node _scripts/fetch_eurusd_prices.mjs
 
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch EU fuel prices
+        run: node _scripts/fetch_eu_prices.mjs
+
       - name: Generate JSON + CSVs
         run: node _scripts/generate_fuel_json.mjs
 
@@ -47,6 +53,8 @@ jobs:
           aws s3 cp assets/data/eurusd_prices.csv s3://polasreport-data/eurusd_prices.csv \
             --content-type "text/csv; charset=utf-8"
           aws s3 cp assets/data/brent_eur_prices.csv s3://polasreport-data/brent_eur_prices.csv \
+            --content-type "text/csv; charset=utf-8"
+          aws s3 cp assets/data/eu_prices.csv s3://polasreport-data/eu_prices.csv \
             --content-type "text/csv; charset=utf-8"
 
 

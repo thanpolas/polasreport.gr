@@ -19,6 +19,7 @@ const FUEL_CSV = join(DATA_DIR, "fuel_prices.csv");
 const BRENT_CSV = join(DATA_DIR, "brent_prices.csv");
 const EURUSD_CSV = join(DATA_DIR, "eurusd_prices.csv");
 const BRENT_EUR_CSV = join(DATA_DIR, "brent_eur_prices.csv");
+const EU_CSV = join(DATA_DIR, "eu_prices.csv");
 const OUT_JSON = join(OUT_DIR, "fuel-chart.json");
 
 function parseCSV(path) {
@@ -248,6 +249,44 @@ function main() {
     },
   };
 
+  // Build EU comparison data (optional)
+  let euComparison = null;
+  if (existsSync(EU_CSV)) {
+    const euRows = parseCSV(EU_CSV);
+    const euCols = ["eu_euro95", "eu_diesel", "gr_euro95", "gr_diesel", "it_euro95", "it_diesel", "bg_euro95", "bg_diesel", "ro_euro95", "ro_diesel"];
+    const euTimestamps = [];
+    const euSeries = {};
+    for (const col of euCols) euSeries[col] = [];
+
+    for (const row of euRows) {
+      if (!row.date) continue;
+      euTimestamps.push(toTimestamp(row.date));
+      for (const col of euCols) {
+        const val = row[col] ? parseFloat(row[col]) : null;
+        euSeries[col].push(val != null && !isNaN(val) ? round(val) : null);
+      }
+    }
+
+    euComparison = {
+      resolution: "weekly",
+      countries: ["EU", "GR", "IT", "BG", "RO"],
+      country_labels: {
+        EU: "\u039c.\u039f. \u0395\u0395",
+        GR: "\u0395\u03bb\u03bb\u03ac\u03b4\u03b1",
+        IT: "\u0399\u03c4\u03b1\u03bb\u03af\u03b1",
+        BG: "\u0392\u03bf\u03c5\u03bb\u03b3\u03b1\u03c1\u03af\u03b1",
+        RO: "\u03a1\u03bf\u03c5\u03bc\u03b1\u03bd\u03af\u03b1",
+      },
+      fuels: ["euro95", "diesel"],
+      timestamps: euTimestamps,
+      series: euSeries,
+    };
+
+    console.log(`  EU comparison: ${euTimestamps.length} weekly data points.`);
+  } else {
+    console.warn("No eu_prices.csv found -- skipping EU comparison.");
+  }
+
   const output = {
     updated: new Date().toISOString().slice(0, 10),
     latest,
@@ -268,6 +307,10 @@ function main() {
     },
   };
 
+  if (euComparison) {
+    output.eu_comparison = euComparison;
+  }
+
   // Write JSON
   mkdirSync(OUT_DIR, { recursive: true });
   writeFileSync(OUT_JSON, JSON.stringify(output));
@@ -280,6 +323,9 @@ function main() {
   }
   if (existsSync(BRENT_EUR_CSV)) {
     copyFileSync(BRENT_EUR_CSV, join(OUT_DIR, "brent_eur_prices.csv"));
+  }
+  if (existsSync(EU_CSV)) {
+    copyFileSync(EU_CSV, join(OUT_DIR, "eu_prices.csv"));
   }
 
   const jsonSize = (readFileSync(OUT_JSON).length / 1024).toFixed(1);
