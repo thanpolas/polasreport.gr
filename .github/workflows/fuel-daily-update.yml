@@ -34,6 +34,9 @@ jobs:
       - name: Fetch EU fuel prices
         run: node _scripts/fetch_eu_prices.mjs
 
+      - name: Fetch ΔΕΠ refinery prices (via akosiaris/greek-oil-refinery-prices)
+        run: node _scripts/fetch_dep_prices.mjs
+
       - name: Generate JSON + CSVs
         run: node _scripts/generate_fuel_json.mjs
 
@@ -55,6 +58,8 @@ jobs:
           aws s3 cp assets/data/brent_eur_prices.csv s3://polasreport-data/brent_eur_prices.csv \
             --content-type "text/csv; charset=utf-8"
           aws s3 cp assets/data/eu_prices.csv s3://polasreport-data/eu_prices.csv \
+            --content-type "text/csv; charset=utf-8"
+          aws s3 cp assets/data/dep_prices.csv s3://polasreport-data/dep_prices.csv \
             --content-type "text/csv; charset=utf-8"
 
 

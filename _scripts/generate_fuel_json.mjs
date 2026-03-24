@@ -20,6 +20,7 @@ const BRENT_CSV = join(DATA_DIR, "brent_prices.csv");
 const EURUSD_CSV = join(DATA_DIR, "eurusd_prices.csv");
 const BRENT_EUR_CSV = join(DATA_DIR, "brent_eur_prices.csv");
 const EU_CSV = join(DATA_DIR, "eu_prices.csv");
+const DEP_CSV = join(DATA_DIR, "dep_prices.csv");
 const OUT_JSON = join(OUT_DIR, "fuel-chart.json");
 
 function parseCSV(path) {
@@ -110,6 +111,21 @@ function main() {
     );
   }
 
+  // Index ΔΕΠ (refinery) prices by date (optional)
+  const depByDate = new Map();
+  if (existsSync(DEP_CSV)) {
+    const depRows = parseCSV(DEP_CSV);
+    depRows.forEach((r) => depByDate.set(r.date, {
+      dep_unleaded_95: r.dep_unleaded_95 ? parseFloat(r.dep_unleaded_95) : null,
+      dep_unleaded_100: r.dep_unleaded_100 ? parseFloat(r.dep_unleaded_100) : null,
+      dep_diesel: r.dep_diesel ? parseFloat(r.dep_diesel) : null,
+      dep_heating_diesel: r.dep_heating_diesel ? parseFloat(r.dep_heating_diesel) : null,
+      dep_autogas: r.dep_autogas ? parseFloat(r.dep_autogas) : null,
+    }));
+  } else {
+    console.warn("No dep_prices.csv found — skipping ΔΕΠ refinery data.");
+  }
+
   // Build aligned arrays — only dates that exist in fuel data
   const timestamps = [];
   const unleaded95 = [];
@@ -120,6 +136,11 @@ function main() {
   const brent = [];
   const eurUsd = [];
   const brentEur = [];
+  const depU95 = [];
+  const depU100 = [];
+  const depDiesel = [];
+  const depHeating = [];
+  const depAutogas = [];
 
   // Track new brent_eur conversions to persist
   let brentEurNewRows = 0;
@@ -175,6 +196,20 @@ function main() {
       brentEurNewRows++;
     }
 
+    // Find ΔΕΠ prices (same day or most recent prior day)
+    let depData = depByDate.get(date) ?? null;
+    if (depData == null && depByDate.size > 0) {
+      const dt = new Date(date);
+      for (let i = 1; i <= 10; i++) {
+        dt.setDate(dt.getDate() - 1);
+        const prev = dt.toISOString().slice(0, 10);
+        if (depByDate.has(prev)) {
+          depData = depByDate.get(prev);
+          break;
+        }
+      }
+    }
+
     timestamps.push(toTimestamp(date));
     unleaded95.push(u95);
     unleaded100.push(u100);
@@ -184,6 +219,11 @@ function main() {
     brent.push(brentPrice);
     eurUsd.push(eurUsdRate);
     brentEur.push(brentEurPrice);
+    depU95.push(depData?.dep_unleaded_95 ?? null);
+    depU100.push(depData?.dep_unleaded_100 ?? null);
+    depDiesel.push(depData?.dep_diesel ?? null);
+    depHeating.push(depData?.dep_heating_diesel ?? null);
+    depAutogas.push(depData?.dep_autogas ?? null);
   }
 
   // Persist brent_eur conversions CSV
@@ -237,6 +277,8 @@ function main() {
     brent: brent[len - 1],
     eur_usd: eurUsd[len - 1],
     brent_eur: round(brentEur[len - 1]),
+    dep_unleaded_95: depU95[len - 1],
+    dep_diesel: depDiesel[len - 1],
     avg_365: {
       unleaded_95: round(avg(tail(unleaded95))),
       unleaded_100: round(avg(tail(unleaded100))),
@@ -304,6 +346,11 @@ function main() {
       pct_brent: pctBrent,
       pct_brent_eur: pctBrentEur,
       cumulative_spread: cumulativeSpread,
+      dep_unleaded_95: depU95.map((v) => round(v)),
+      dep_unleaded_100: depU100.map((v) => round(v)),
+      dep_diesel: depDiesel.map((v) => round(v)),
+      dep_heating_diesel: depHeating.map((v) => round(v)),
+      dep_autogas: depAutogas.map((v) => round(v)),
     },
   };
 
@@ -327,6 +374,9 @@ function main() {
   if (existsSync(EU_CSV)) {
     copyFileSync(EU_CSV, join(OUT_DIR, "eu_prices.csv"));
   }
+  if (existsSync(DEP_CSV)) {
+    copyFileSync(DEP_CSV, join(OUT_DIR, "dep_prices.csv"));
+  }
 
   const jsonSize = (readFileSync(OUT_JSON).length / 1024).toFixed(1);
   console.log(`Generated ${OUT_JSON} (${jsonSize} KB)`);
@@ -335,6 +385,9 @@ function main() {
   console.log(`  Brent: $${latest.brent} (avg365: $${latest.avg_365.brent})`);
   if (latest.brent_eur != null) {
     console.log(`  Brent EUR: €${latest.brent_eur} (avg365: €${latest.avg_365.brent_eur})`);
+  }
+  if (depByDate.size > 0) {
+    console.log(`  ΔΕΠ: ${depByDate.size} source dates, latest dep_u95: €${depU95[len - 1]}`);
   }
   console.log(`Copied CSVs to ${OUT_DIR}/`);
 }

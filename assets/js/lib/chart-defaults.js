@@ -9,6 +9,7 @@ export const COLORS = {
   spread: "#e76f51",
   avgLine: "#999",
   romania: "#9b5de5",
+  dep: "#d4a017",
 };
 
 /** Calculate responsive chart dimensions from a container element. */

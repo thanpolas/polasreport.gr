@@ -78,7 +78,39 @@ permalink: /fuel/
   </div>
 </section>
 
-<!-- SECTION 5: EU Comparison -->
+<!-- SECTION 5: Brent vs ΔΕΠ -->
+<section class="fuel-section" id="brent-dep">
+  <h2 class="fuel-section-title">Brent vs Τιμές Διυλιστηρίου (ΔΕΠ)</h2>
+
+  <div class="fuel-analysis-intro">
+    <p>Σύγκριση μεταξύ τιμής αργού πετρελαίου Brent (<strong style="color:#2a9d8f">πράσινο</strong>, δεξιός άξονας, EUR/βαρέλι) και τιμής διυλιστηρίου ΔΕΠ (<strong style="color:#d4a017">χρυσό</strong>, αριστερός άξονας, EUR/λίτρο, με φόρους και ΦΠΑ). Δείχνει πόσο γρήγορα και πιστά μεταφέρεται η τιμή του αργού στη χονδρική τιμή.</p>
+  </div>
+
+  <div class="fuel-chart-wrap">
+    <div class="fuel-chart-title" id="brent-dep-chart-title">Αμόλυβδη 95 -- Brent vs ΔΕΠ</div>
+    <div class="fuel-chart-container" id="chart-brent-dep">
+      <div class="fuel-chart-skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: ΔΕΠ vs Retail -->
+<section class="fuel-section" id="dep-retail">
+  <h2 class="fuel-section-title">Τιμές Διυλιστηρίου vs Λιανική</h2>
+
+  <div class="fuel-analysis-intro">
+    <p>Σύγκριση μεταξύ τιμής διυλιστηρίου ΔΕΠ (<strong style="color:#d4a017">χρυσό</strong>, με ΦΠΑ) και τιμής αντλίας (<strong style="color:#e63946">κόκκινο</strong>). Η διαφορά αντιπροσωπεύει το περιθώριο κέρδους του πρατηριούχου και τα κόστη μεταφοράς/διανομής. Πηγή χονδρικής: <a href="https://oil.gge.gov.gr" target="_blank" rel="noopener">oil.gge.gov.gr</a>.</p>
+  </div>
+
+  <div class="fuel-chart-wrap">
+    <div class="fuel-chart-title" id="dep-retail-chart-title">Αμόλυβδη 95 -- ΔΕΠ vs Λιανική (EUR/λίτρο)</div>
+    <div class="fuel-chart-container" id="chart-dep-retail">
+      <div class="fuel-chart-skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: EU Comparison -->
 <section class="fuel-section" id="eu-comparison">
   <h2 class="fuel-section-title">Σύγκριση με ΕΕ</h2>
 
@@ -126,6 +158,12 @@ permalink: /fuel/
       </a>
     </li>
     <li class="fuel-download-item">
+      <a class="fuel-download-link" href="https://polasreport-data.s3.us-west-1.amazonaws.com/dep_prices.csv" download>
+        <i class="bx bx-download" aria-hidden="true"></i>
+        Τιμές διυλιστηρίου ΔΕΠ (CSV)
+      </a>
+    </li>
+    <li class="fuel-download-item">
       <a class="fuel-download-link" href="https://polasreport-data.s3.us-west-1.amazonaws.com/fuel-chart.json" download>
         <i class="bx bx-download" aria-hidden="true"></i>
         Ενοποιημένα δεδομένα ανάλυσης (JSON)
@@ -146,7 +184,7 @@ permalink: /fuel/
       </ul>
     </details>
 
-    <p><strong>Πηγές δεδομένων:</strong> Τιμές καυσίμων από <a href="https://www.fuelprices.gr/deltia_d.view" target="_blank" rel="noopener">fuelprices.gr</a> (Υπουργείο Ανάπτυξης). Τιμές Brent crude από <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">FRED</a> (Federal Reserve Bank of St. Louis). Ισοτιμία EUR/USD από <a href="https://fred.stlouisfed.org/series/DEXUSEU" target="_blank" rel="noopener">FRED</a> (σειρά DEXUSEU). Ευρωπαϊκές τιμές καυσίμων από το <a href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en" target="_blank" rel="noopener">Weekly Oil Bulletin</a> (Ευρωπαϊκή Επιτροπή).</p>
+    <p><strong>Πηγές δεδομένων:</strong> Τιμές καυσίμων από <a href="https://www.fuelprices.gr/deltia_d.view" target="_blank" rel="noopener">fuelprices.gr</a> (Υπουργείο Ανάπτυξης). Τιμές Brent crude από <a href="https://fred.stlouisfed.org/series/DCOILBRENTEU" target="_blank" rel="noopener">FRED</a> (Federal Reserve Bank of St. Louis). Ισοτιμία EUR/USD από <a href="https://fred.stlouisfed.org/series/DEXUSEU" target="_blank" rel="noopener">FRED</a> (σειρά DEXUSEU). Τιμές διυλιστηρίου (ΔΕΠ) από <a href="https://oil.gge.gov.gr" target="_blank" rel="noopener">oil.gge.gov.gr</a> (Γεν. Γραμμ. Εμπορίου), μέσω <a href="https://github.com/akosiaris/greek-oil-refinery-prices" target="_blank" rel="noopener">akosiaris/greek-oil-refinery-prices</a>. Ευρωπαϊκές τιμές καυσίμων από το <a href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en" target="_blank" rel="noopener">Weekly Oil Bulletin</a> (Ευρωπαϊκή Επιτροπή).</p>
     <p><strong>Συχνότητα ενημέρωσης:</strong> Ημερήσια δεδομένα για Ελλάδα και Brent. Εβδομαδιαία δεδομένα για ευρωπαϊκή σύγκριση (Weekly Oil Bulletin).</p>
     <p><strong>Άδεια:</strong> <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, ελεύθερη χρήση με αναφορά.</p>
   </div>

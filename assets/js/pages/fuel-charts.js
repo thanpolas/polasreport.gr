@@ -952,7 +952,312 @@ function renderAnalysisCharts(data) {
   }
 }
 
-// ---- Section 5: EU Comparison Chart ----
+// ---- Section 5: Brent vs ΔΕΠ Chart ----
+
+function renderBrentDepChart(data) {
+  const { timestamps, brent_eur, dep_unleaded_95, dep_unleaded_100, dep_diesel, dep_autogas } = data.series;
+  const hasDep = dep_unleaded_95 && dep_unleaded_95.some((v) => v != null);
+  if (!hasDep) return;
+
+  const container = document.getElementById("chart-brent-dep");
+  if (!container) return;
+
+  const titleEl = document.getElementById("brent-dep-chart-title");
+
+  // Map fuel key to ΔΕΠ series
+  const depSeriesMap = {
+    unleaded_95: dep_unleaded_95,
+    unleaded_100: dep_unleaded_100,
+    diesel: dep_diesel,
+    autogas: dep_autogas,
+  };
+
+  function activeDepSeries() {
+    return depSeriesMap[fuelState.key] || dep_unleaded_95;
+  }
+
+  function buildOpts() {
+    const ft = FUEL_TYPES[fuelState.key];
+    return {
+      ...baseOpts(null),
+      scales: {
+        x: { time: true },
+        dep: { auto: true },
+        brent: { auto: true },
+      },
+      series: [
+        {},
+        {
+          label: `ΔΕΠ ${ft.fullLabel}`,
+          stroke: COLORS.dep,
+          width: 2,
+          scale: "dep",
+          fill: COLORS.dep + "14",
+        },
+        {
+          label: "Brent Crude (EUR)",
+          stroke: COLORS.brent,
+          width: 1.5,
+          scale: "brent",
+        },
+      ],
+      axes: [
+        baseOpts(null).axes[0],
+        {
+          ...baseOpts(null).axes[1],
+          scale: "dep",
+          stroke: COLORS.dep + "cc",
+          grid: { stroke: COLORS.dep + "0e", width: 1 },
+          ticks: { stroke: COLORS.dep + "33", width: 1 },
+          values: (u, vals) => vals.map((v) => v != null ? `€${v.toFixed(2)}` : ""),
+        },
+        {
+          ...baseOpts(null).axes[1],
+          scale: "brent",
+          side: 1,
+          stroke: COLORS.brent + "cc",
+          grid: { show: false },
+          ticks: { stroke: COLORS.brent + "33", width: 1 },
+          values: (u, vals) => vals.map((v) => v != null ? `€${v.toFixed(0)}` : ""),
+        },
+      ],
+      plugins: [brentDepTooltipPlugin()],
+    };
+  }
+
+  function brentDepTooltipPlugin() {
+    let tooltipEl;
+
+    function init(u) {
+      tooltipEl = document.createElement("div");
+      tooltipEl.className = "fuel-tooltip";
+      tooltipEl.style.display = "none";
+      u.over.appendChild(tooltipEl);
+    }
+
+    function setCursor(u) {
+      const { idx } = u.cursor;
+      if (idx == null) { tooltipEl.style.display = "none"; return; }
+
+      const ts = u.data[0][idx];
+      const depVal = u.data[1][idx];
+      const brentVal = u.data[2][idx];
+
+      let html = `<div class="fuel-tooltip-date">${fmtDate(ts)}</div>`;
+      if (depVal != null) {
+        html += `<div class="fuel-tooltip-row">
+          <span class="fuel-tooltip-swatch" style="background:${COLORS.dep}"></span>
+          ΔΕΠ: <strong>€${fmtEUR(depVal)}</strong>/λ
+        </div>`;
+      }
+      if (brentVal != null) {
+        html += `<div class="fuel-tooltip-row">
+          <span class="fuel-tooltip-swatch" style="background:${COLORS.brent}"></span>
+          Brent: <strong>€${brentVal.toFixed(2)}</strong>/βαρ
+        </div>`;
+      }
+
+      tooltipEl.innerHTML = html;
+      tooltipEl.style.display = "block";
+
+      const { left, top } = u.cursor;
+      const overRect = u.over.getBoundingClientRect();
+      const ttRect = tooltipEl.getBoundingClientRect();
+      let x = left + 15;
+      let y = top - 10;
+      if (x + ttRect.width > overRect.width) x = left - ttRect.width - 15;
+      if (y + ttRect.height > overRect.height) y = overRect.height - ttRect.height - 5;
+      if (y < 0) y = 5;
+      tooltipEl.style.left = x + "px";
+      tooltipEl.style.top = y + "px";
+    }
+
+    return { hooks: { init: [init], setCursor: [setCursor] } };
+  }
+
+  let chart = mountChart(
+    "chart-brent-dep",
+    buildOpts(),
+    [timestamps, activeDepSeries(), brent_eur],
+    "1Y",
+  );
+
+  function updateTitle() {
+    if (titleEl) {
+      const ft = FUEL_TYPES[fuelState.key];
+      titleEl.textContent = `${ft.fullLabel} -- Brent vs ΔΕΠ`;
+    }
+  }
+  updateTitle();
+
+  // Respond to fuel selection
+  fuelState.on(() => {
+    container.querySelector(".uplot")?.remove();
+    container.querySelector(".fuel-range-btns")?.remove();
+
+    chart = mountChart(
+      "chart-brent-dep",
+      buildOpts(),
+      [timestamps, activeDepSeries(), brent_eur],
+      "1Y",
+    );
+    updateTitle();
+  });
+}
+
+// ---- Section 6: ΔΕΠ vs Retail Chart ----
+
+function renderDepRetailChart(data) {
+  const { timestamps, unleaded_95, unleaded_100, diesel, autogas,
+          dep_unleaded_95, dep_unleaded_100, dep_diesel, dep_autogas } = data.series;
+  const hasDep = dep_unleaded_95 && dep_unleaded_95.some((v) => v != null);
+  if (!hasDep) return;
+
+  const container = document.getElementById("chart-dep-retail");
+  if (!container) return;
+
+  const titleEl = document.getElementById("dep-retail-chart-title");
+
+  const retailMap = {
+    unleaded_95: unleaded_95,
+    unleaded_100: unleaded_100,
+    diesel: diesel,
+    autogas: autogas,
+  };
+
+  const depMap = {
+    unleaded_95: dep_unleaded_95,
+    unleaded_100: dep_unleaded_100,
+    diesel: dep_diesel,
+    autogas: dep_autogas,
+  };
+
+  function activeRetail() { return retailMap[fuelState.key] || unleaded_95; }
+  function activeDep() {
+    // ΔΕΠ values already include VAT (stored as vatPrice/1000 from source)
+    return depMap[fuelState.key] || dep_unleaded_95;
+  }
+
+  function buildOpts() {
+    const ft = FUEL_TYPES[fuelState.key];
+    return {
+      ...baseOpts(null),
+      series: [
+        {},
+        {
+          label: `Λιανική ${ft.fullLabel}`,
+          stroke: COLORS.unleaded95,
+          width: 2,
+          fill: COLORS.unleaded95 + "14",
+        },
+        {
+          label: `ΔΕΠ ${ft.fullLabel} (με ΦΠΑ)`,
+          stroke: COLORS.dep,
+          width: 2,
+          fill: COLORS.dep + "14",
+        },
+      ],
+      axes: [
+        baseOpts(null).axes[0],
+        {
+          ...baseOpts(null).axes[1],
+          values: (u, vals) => vals.map((v) => v != null ? fmtEUR(v) : ""),
+        },
+      ],
+      plugins: [depRetailTooltipPlugin()],
+    };
+  }
+
+  function depRetailTooltipPlugin() {
+    let tooltipEl;
+
+    function init(u) {
+      tooltipEl = document.createElement("div");
+      tooltipEl.className = "fuel-tooltip";
+      tooltipEl.style.display = "none";
+      u.over.appendChild(tooltipEl);
+    }
+
+    function setCursor(u) {
+      const { idx } = u.cursor;
+      if (idx == null) { tooltipEl.style.display = "none"; return; }
+
+      const ts = u.data[0][idx];
+      const retailVal = u.data[1][idx];
+      const depVal = u.data[2][idx];
+      const spread = (retailVal != null && depVal != null)
+        ? Math.round((retailVal - depVal) * 1000) / 1000
+        : null;
+
+      let html = `<div class="fuel-tooltip-date">${fmtDate(ts)}</div>`;
+      if (retailVal != null) {
+        html += `<div class="fuel-tooltip-row">
+          <span class="fuel-tooltip-swatch" style="background:${COLORS.unleaded95}"></span>
+          Λιανική: <strong>€${fmtEUR(retailVal)}</strong>
+        </div>`;
+      }
+      if (depVal != null) {
+        html += `<div class="fuel-tooltip-row">
+          <span class="fuel-tooltip-swatch" style="background:${COLORS.dep}"></span>
+          ΔΕΠ: <strong>€${fmtEUR(depVal)}</strong>
+        </div>`;
+      }
+      if (spread != null) {
+        html += `<div class="fuel-tooltip-row" style="border-top:1px solid #eee;padding-top:3px;margin-top:3px">
+          Περιθώριο: <strong>€${fmtEUR(Math.abs(spread))}</strong>
+          (${Math.abs(spread / depVal * 100).toFixed(1)}%)
+        </div>`;
+      }
+
+      tooltipEl.innerHTML = html;
+      tooltipEl.style.display = "block";
+
+      const { left, top } = u.cursor;
+      const overRect = u.over.getBoundingClientRect();
+      const ttRect = tooltipEl.getBoundingClientRect();
+      let x = left + 15;
+      let y = top - 10;
+      if (x + ttRect.width > overRect.width) x = left - ttRect.width - 15;
+      if (y + ttRect.height > overRect.height) y = overRect.height - ttRect.height - 5;
+      if (y < 0) y = 5;
+      tooltipEl.style.left = x + "px";
+      tooltipEl.style.top = y + "px";
+    }
+
+    return { hooks: { init: [init], setCursor: [setCursor] } };
+  }
+
+  let chart = mountChart(
+    "chart-dep-retail",
+    buildOpts(),
+    [timestamps, activeRetail(), activeDep()],
+    "1Y",
+  );
+
+  function updateTitle() {
+    if (titleEl) {
+      const ft = FUEL_TYPES[fuelState.key];
+      titleEl.textContent = `${ft.fullLabel} -- ΔΕΠ vs Λιανική (EUR/λίτρο)`;
+    }
+  }
+  updateTitle();
+
+  // Respond to fuel selection
+  fuelState.on(() => {
+    container.querySelector(".uplot")?.remove();
+    container.querySelector(".fuel-range-btns")?.remove();
+
+    chart = mountChart(
+      "chart-dep-retail",
+      buildOpts(),
+      [timestamps, activeRetail(), activeDep()],
+      "1Y",
+    );
+    updateTitle();
+  });
+}
+
+// ---- Section 7: EU Comparison Chart ----
 
 const EU_COUNTRIES = {
   GR: { label: "Ελλάδα", color: COLORS.unleaded95, width: 2.5 },
@@ -1181,6 +1486,8 @@ async function main() {
     renderPriceCards(data);
     renderHistoryCharts(data);
     renderAnalysisCharts(data);
+    renderBrentDepChart(data);
+    renderDepRetailChart(data);
     renderEUComparison(data);
   } catch (err) {
     console.error("Failed to load fuel data:", err);
