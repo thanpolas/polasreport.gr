@@ -19,6 +19,16 @@ jobs:
       - name: Install poppler (for pdftotext)
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
 
+      - name: Seed CSVs from S3 (accumulated state)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-west-1
+        run: |
+          for f in fuel_prices.csv brent_prices.csv eurusd_prices.csv eu_prices.csv; do
+            aws s3 cp "s3://polasreport-data/$f" "_fuel-pdfs/$f" || echo "  $f not on S3 yet, using repo copy"
+          done
+
       - name: Fetch today's fuel PDF
         run: node _scripts/fetch_today_pdf.mjs
 
